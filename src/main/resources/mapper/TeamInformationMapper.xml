@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.TeamInformationMapper">
+
+    <select id="findAllTeams" resultType="com.example.demo.model.TeamInformation">
+        SELECT * FROM team_information ORDER BY total_score DESC, total_assists DESC, team_number ASC;
+    </select>
+
+    <select id="findTeamByNumber" resultType="com.example.demo.model.TeamInformation">
+        SELECT * FROM team_information WHERE team_number=#{team_number};
+    </select>
+
+    <insert id="addTeam" parameterType="com.example.demo.model.TeamInformation">
+        INSERT INTO team_information (team_name, team_affiliation_college, captain_name, player_1_name, player_2_name, total_score, total_assists)
+        VALUES (#{team_name}, #{team_affiliation_college}, #{captain_name}, #{player_1_name}, #{player_2_name}, #{total_score}, #{total_assists});
+    </insert>
+
+    <update id="updateTeam" parameterType="com.example.demo.model.TeamInformation">
+        UPDATE team_information SET
+        team_name=#{team_name},
+        team_affiliation_college=#{team_affiliation_college},
+        captain_name=#{captain_name},
+        player_1_name=#{player_1_name},
+        player_2_name=#{player_2_name},
+        total_score=#{total_score},
+        total_assists=#{total_assists}
+        WHERE team_number=#{team_number};
+    </update>
+
+    <delete id="deleteTeam">
+        DELETE FROM team_information WHERE team_number=#{team_number};
+    </delete>
+
+
+    <select id="findTeamByName" parameterType="String" resultType="com.example.demo.model.TeamInformation">
+        SELECT * FROM team_information WHERE team_name = #{team_name}
+    </select>
+
+</mapper>

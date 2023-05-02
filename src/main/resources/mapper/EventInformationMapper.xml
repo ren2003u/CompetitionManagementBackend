@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.EventInformationMapper">
+
+    <select id="findAllEvents" resultType="com.example.demo.model.EventInformation">
+        SELECT * FROM event_information;
+    </select>
+
+    <select id="findEventByEventNumber" resultType="com.example.demo.model.EventInformation">
+        SELECT * FROM event_information WHERE event_number=#{event_number};
+    </select>
+
+    <insert id="addEvent" parameterType="com.example.demo.model.EventInformation">
+        INSERT INTO event_information (event_name, event_time, event_location)
+        VALUES (#{event_name}, #{event_time}, #{event_location});
+    </insert>
+
+    <update id="updateEvent" parameterType="com.example.demo.model.EventInformation">
+        UPDATE event_information SET
+        event_name=#{event_name},
+        event_time=#{event_time},
+        event_location=#{event_location}
+        WHERE event_number=#{event_number};
+    </update>
+
+    <delete id="deleteEvent">
+        DELETE FROM event_information WHERE event_number=#{event_number};
+    </delete>
+
+
+    <select id="findEventByName" parameterType="String" resultType="com.example.demo.model.EventInformation">
+        SELECT * FROM event_information WHERE event_name = #{event_name}
+    </select>
+</mapper>

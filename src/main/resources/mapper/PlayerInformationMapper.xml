@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.PlayerInformationMapper">
+
+    <select id="findAllPlayers" resultType="com.example.demo.model.PlayerInformation">
+        SELECT * FROM player_information;
+    </select>
+
+    <select id="findPlayerById" resultType="com.example.demo.model.PlayerInformation">
+        SELECT * FROM player_information WHERE id=#{id};
+    </select>
+
+    <insert id="addPlayer" parameterType="com.example.demo.model.PlayerInformation">
+        INSERT INTO player_information (name, gender, team, total_points_scored, total_assists)
+        VALUES (#{name}, #{gender}, #{team}, #{total_points_scored}, #{total_assists});
+    </insert>
+
+    <update id="updatePlayer" parameterType="com.example.demo.model.PlayerInformation">
+        UPDATE player_information SET
+        name=#{name},
+        gender=#{gender},
+        team=#{team},
+        total_points_scored=#{total_points_scored},
+        total_assists=#{total_assists}
+        WHERE id=#{id};
+    </update>
+
+    <delete id="deletePlayer">
+        DELETE FROM player_information WHERE id=#{id};
+    </delete>
+
+
+    <select id="findPlayerByName" parameterType="String" resultType="com.example.demo.model.PlayerInformation">
+        SELECT * FROM player_information WHERE name = #{name}
+    </select>
+
+
+    <select id="findPlayersByTeamNumber" resultType="com.example.demo.model.PlayerInformation">
+        SELECT * FROM player_information WHERE team_number = #{team_number}
+    </select>
+
+    <delete id="deletePlayersByTeamNumber" parameterType="int">
+        DELETE FROM player_information WHERE team_number = #{team_number}
+    </delete>
+</mapper>
