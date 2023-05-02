@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.commom.AjaxResult;
 import com.example.demo.model.PlayerInformation;
 import com.example.demo.model.TeamInfoFrontEnd;
 import com.example.demo.model.TeamInformation;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -23,18 +25,26 @@ public class TeamController {
     private PlayerInformationService playerInformationService;
 
     @GetMapping("/list")
-    public List<TeamInformation> findAllTeams() {
-        return teamInformationService.findAllTeams();
+    public HashMap findAllTeams() {
+        List<TeamInformation> teams = teamInformationService.findAllTeams();
+        if (teams == null || teams.isEmpty()) {
+            return AjaxResult.fail(-1, "No teams found!");
+        }
+        return AjaxResult.success(teams);
     }
 
     @GetMapping("/byname")
-    public TeamInformation findTeamByName(@RequestParam("team_name") String team_name) {
-        return teamInformationService.findTeamByName(team_name);
+    public HashMap findTeamByName(@RequestParam("team_name") String team_name) {
+        TeamInformation team = teamInformationService.findTeamByName(team_name);
+        if (team == null) {
+            return AjaxResult.fail(-1, "Team not found!");
+        }
+        return AjaxResult.success(team);
     }
 
     @PostMapping("/addOrUpdate")
     public String addOrUpdateTeam(@RequestBody TeamInfoFrontEnd teamInfoFrontEnd) {
-        TeamInformation existingTeam = findTeamByName(teamInfoFrontEnd.getTeam_name());
+        TeamInformation existingTeam = (TeamInformation) findTeamByName(teamInfoFrontEnd.getTeam_name()).get("data");
 
         // Calculate team's total score and assists
         int teamTotalScore = teamInfoFrontEnd.getCaptain_total_score() + teamInfoFrontEnd.getPlayer_1_total_score() + teamInfoFrontEnd.getPlayer_2_total_score();
@@ -48,7 +58,7 @@ public class TeamController {
             teamInformationService.updateTeam(teamInfo);
         } else {
             teamInformationService.addTeam(teamInfo);
-            existingTeam = findTeamByName(teamInfo.getTeam_name());
+            existingTeam = (TeamInformation) findTeamByName(teamInfo.getTeam_name()).get("data");
         }
 
         List<PlayerInformation> players = new ArrayList<>();

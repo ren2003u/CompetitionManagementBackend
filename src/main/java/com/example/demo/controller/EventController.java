@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 
+import com.example.demo.commom.AjaxResult;
 import com.example.demo.model.EventInformation;
 import com.example.demo.model.EventRequest;
 import com.example.demo.model.EventTeam;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -35,8 +37,12 @@ public class EventController {
 
     // 2. Look up event information for a specific event name
     @GetMapping("/byname/{event_name}")
-    public EventInformation getEventByName(@PathVariable String event_name) {
-        return eventInformationService.findEventByName(event_name);
+    public HashMap getEventByName(@PathVariable String event_name) {
+        EventInformation event = eventInformationService.findEventByName(event_name);
+        if (event == null) {
+            return AjaxResult.fail(-1, "Event not found!");
+        }
+        return AjaxResult.success(event);
     }
 
     // 3. Modify or add event information
