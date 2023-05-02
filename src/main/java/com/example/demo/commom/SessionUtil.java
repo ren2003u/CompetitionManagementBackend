@@ -1,8 +1,11 @@
 package com.example.demo.commom;
 
 import com.example.demo.model.User;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
+//import jakarta.servlet.http.HttpServletRequest;
+//import jakarta.servlet.http.HttpSession;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 public class SessionUtil {
     public static User getLoginUser(HttpServletRequest request){

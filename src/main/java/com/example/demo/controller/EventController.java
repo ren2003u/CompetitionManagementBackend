@@ -38,6 +38,7 @@ public class EventController {
     // 2. Look up event information for a specific event name
     @GetMapping("/byname/{event_name}")
     public HashMap getEventByName(@PathVariable String event_name) {
+        //todo:返回值不完整
         EventInformation event = eventInformationService.findEventByName(event_name);
         if (event == null) {
             return AjaxResult.fail(-1, "Event not found!");
@@ -69,7 +70,7 @@ public class EventController {
             }
         } else {
             // Add new event
-            EventInformation newEvent = new EventInformation(eventRequest.getEvent_name(), eventRequest.getEvent_location(), eventRequest.getEvent_time());
+            EventInformation newEvent = new EventInformation(0,eventRequest.getEvent_name(), eventRequest.getEvent_time(),eventRequest.getEvent_location());
             eventInformationService.addEvent(newEvent);
             int eventNumber = eventInformationService.findEventByName(eventRequest.getEvent_name()).getEvent_number();
 

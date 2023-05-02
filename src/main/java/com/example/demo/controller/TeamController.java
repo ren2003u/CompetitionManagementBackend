@@ -33,8 +33,8 @@ public class TeamController {
         return AjaxResult.success(teams);
     }
 
-    @GetMapping("/byname")
-    public HashMap findTeamByName(@RequestParam("team_name") String team_name) {
+    @GetMapping("/byname/{team_name}")
+    public HashMap findTeamByName(@PathVariable String team_name) {
         TeamInformation team = teamInformationService.findTeamByName(team_name);
         if (team == null) {
             return AjaxResult.fail(-1, "Team not found!");
@@ -44,14 +44,17 @@ public class TeamController {
 
     @PostMapping("/addOrUpdate")
     public String addOrUpdateTeam(@RequestBody TeamInfoFrontEnd teamInfoFrontEnd) {
-        TeamInformation existingTeam = (TeamInformation) findTeamByName(teamInfoFrontEnd.getTeam_name()).get("data");
+        TeamInformation existingTeam = null;
+        if(!(findTeamByName(teamInfoFrontEnd.getTeam_name()).get("data") instanceof String)) {
+            existingTeam = (TeamInformation) findTeamByName(teamInfoFrontEnd.getTeam_name()).get("data");
+        }
 
         // Calculate team's total score and assists
         int teamTotalScore = teamInfoFrontEnd.getCaptain_total_score() + teamInfoFrontEnd.getPlayer_1_total_score() + teamInfoFrontEnd.getPlayer_2_total_score();
         int teamTotalAssists = teamInfoFrontEnd.getCaptain_total_assists() + teamInfoFrontEnd.getPlayer_1_total_assists() + teamInfoFrontEnd.getPlayer_2_total_assists();
 
         // Create team information
-        TeamInformation teamInfo = new TeamInformation(teamInfoFrontEnd.getTeam_name(), teamInfoFrontEnd.getTeam_affiliation_college(), teamInfoFrontEnd.getCaptain_name(), teamInfoFrontEnd.getPlayer_1_name(), teamInfoFrontEnd.getPlayer_2_name(), teamTotalScore, teamTotalAssists);
+        TeamInformation teamInfo = new TeamInformation(0,teamInfoFrontEnd.getTeam_name(), teamInfoFrontEnd.getTeam_affiliation_college(), teamInfoFrontEnd.getCaptain_name(), teamInfoFrontEnd.getPlayer_1_name(), teamInfoFrontEnd.getPlayer_2_name(), teamTotalScore, teamTotalAssists);
 
         if (existingTeam != null) {
             teamInfo.setTeam_number(existingTeam.getTeam_number());
@@ -62,10 +65,9 @@ public class TeamController {
         }
 
         List<PlayerInformation> players = new ArrayList<>();
-        players.add(new PlayerInformation(teamInfoFrontEnd.getCaptain_name(), teamInfoFrontEnd.getCaptain_gender(), existingTeam.getTeam_number(), teamInfoFrontEnd.getCaptain_total_score(), teamInfoFrontEnd.getCaptain_total_assists()));
-        players.add(new PlayerInformation(teamInfoFrontEnd.getPlayer_1_name(), teamInfoFrontEnd.getPlayer_1_gender(), existingTeam.getTeam_number(), teamInfoFrontEnd.getPlayer_1_total_score(), teamInfoFrontEnd.getPlayer_1_total_assists()));
-        players.add(new PlayerInformation(teamInfoFrontEnd.getPlayer_2_name(), teamInfoFrontEnd.getPlayer_2_gender(), existingTeam.getTeam_number(), teamInfoFrontEnd.getPlayer_2_total_score(), teamInfoFrontEnd.getPlayer_2_total_assists()));
-
+        players.add(new PlayerInformation(0,teamInfoFrontEnd.getCaptain_name(), teamInfoFrontEnd.getCaptain_gender(), existingTeam.getTeam_number(), teamInfoFrontEnd.getCaptain_total_score(), teamInfoFrontEnd.getCaptain_total_assists()));
+        players.add(new PlayerInformation(0,teamInfoFrontEnd.getPlayer_1_name(), teamInfoFrontEnd.getPlayer_1_gender(), existingTeam.getTeam_number(), teamInfoFrontEnd.getPlayer_1_total_score(), teamInfoFrontEnd.getPlayer_1_total_assists()));
+        players.add(new PlayerInformation(0,teamInfoFrontEnd.getPlayer_2_name(), teamInfoFrontEnd.getPlayer_2_gender(), existingTeam.getTeam_number(), teamInfoFrontEnd.getPlayer_2_total_score(), teamInfoFrontEnd.getPlayer_2_total_assists()));
         for (PlayerInformation player : players) {
             PlayerInformation existingPlayer = playerInformationService.findPlayerByName(player.getName());
             if (existingPlayer != null) {

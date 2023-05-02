@@ -9,7 +9,18 @@ public class EventInformation {
     private String event_time;
     private String event_location;
 
-    public EventInformation(String event_name, String event_location, String event_time) {
-
+    public EventInformation(int event_number, String event_name, String event_time, String event_location) {
+        this.event_number = event_number;
+        this.event_name = event_name;
+        this.event_time = event_time;
+        this.event_location = event_location;
     }
+
+//    public EventInformation(String event_name, String event_time, String event_location) {
+//        this.event_name = event_name;
+//        this.event_time = event_time;
+//        this.event_location = event_location;
+//    }
+
+
 }

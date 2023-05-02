@@ -41,6 +41,6 @@
     </select>
 
     <delete id="deletePlayersByTeamNumber" parameterType="int">
-        DELETE FROM player_information WHERE team_number = #{team_number}
+        DELETE FROM player_information WHERE team = #{team_number}
     </delete>
 </mapper>
