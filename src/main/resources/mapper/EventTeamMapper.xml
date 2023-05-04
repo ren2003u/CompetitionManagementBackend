@@ -31,4 +31,10 @@
         DELETE FROM event_team WHERE event_number = #{event_number}
     </delete>
 
+    <select id="getEventTeamsByEventNumber" resultType="com.example.demo.model.EventTeam">
+        SELECT *
+        FROM event_team
+        WHERE event_number = #{eventNumber}
+    </select>
+
 </mapper>

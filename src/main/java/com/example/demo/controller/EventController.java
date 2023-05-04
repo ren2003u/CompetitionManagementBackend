@@ -62,7 +62,7 @@ public class EventController {
             for (String teamName : eventRequest.getTeam_names()) {
                 TeamInformation team = teamInformationService.findTeamByName(teamName);
                 if (team != null) {
-                    eventTeamService.addEventTeam(new EventTeam(existingEvent.getEvent_number(), team.getTeam_number()));
+                    eventTeamService.addEventTeam(new EventTeam(0,existingEvent.getEvent_number(), team.getTeam_number()));
                 } else {
                     return AjaxResult.fail(-1,"Team not found: " + teamName);
                 }
@@ -77,7 +77,7 @@ public class EventController {
             for (String teamName : eventRequest.getTeam_names()) {
                 TeamInformation team = teamInformationService.findTeamByName(teamName);
                 if (team != null) {
-                    eventTeamService.addEventTeam(new EventTeam(eventNumber, team.getTeam_number()));
+                    eventTeamService.addEventTeam(new EventTeam(0,eventNumber, team.getTeam_number()));
                 } else {
                     return AjaxResult.fail(-1,"Team not found: " + teamName);
                 }

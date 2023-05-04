@@ -35,4 +35,8 @@ public class EventTeamService {
     public void deleteEventTeamsByEventNumber(int event_number) {
         eventTeamMapper.deleteEventTeamsByEventNumber(event_number);
     }
+
+    public List<EventTeam> getEventTeamsByEventNumber(int eventNumber) {
+        return eventTeamMapper.getEventTeamsByEventNumber(eventNumber);
+    }
 }

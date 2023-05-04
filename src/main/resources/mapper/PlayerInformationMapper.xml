@@ -37,7 +37,7 @@
 
 
     <select id="findPlayersByTeamNumber" resultType="com.example.demo.model.PlayerInformation">
-        SELECT * FROM player_information WHERE team_number = #{team_number}
+        SELECT * FROM player_information WHERE team = #{team_number}
     </select>
 
     <delete id="deletePlayersByTeamNumber" parameterType="int">
