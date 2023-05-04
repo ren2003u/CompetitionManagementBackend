@@ -14,8 +14,8 @@ public class UserService {
         return userMapper.login(username, password);
     }
 
-    public int register(String username, String password, String isAdmin) {
-        return userMapper.register(username, password, isAdmin);
+    public int register(String username, String password, String is_admin) {
+        return userMapper.register(username, password, is_admin);
     }
 
     public User findByUsername(String username) {

@@ -6,7 +6,7 @@
         WHERE username = #{username} AND password = #{password}
     </select>
     <insert id="register">
-        INSERT INTO user (username, password, isAdmin)
+        INSERT INTO user (username, password, is_admin)
         VALUES (#{username}, #{password}, #{is_admin})
     </insert>
     <select id="findByUsername" resultType="com.example.demo.model.User">

@@ -24,13 +24,4 @@ public class TeamInformation {
         this.total_assists = total_assists;
     }
 
-//    public TeamInformation(String captain_name, String player_1_name, String player_2_name, String team_affiliation_college, String team_name, int total_assists, int total_score) {
-//        this.team_name = team_name;
-//        this.team_affiliation_college = team_affiliation_college;
-//        this.captain_name = captain_name;
-//        this.player_1_name = player_1_name;
-//        this.player_2_name = player_2_name;
-//        this.total_score = total_score;
-//        this.total_assists = total_assists;
-//    }
 }

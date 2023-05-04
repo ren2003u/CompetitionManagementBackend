@@ -10,7 +10,6 @@ import com.example.demo.service.EventInformationService;
 import com.example.demo.service.EventTeamService;
 import com.example.demo.service.TeamInformationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -48,7 +47,7 @@ public class EventController {
 
     // 3. Modify or add event information
     @PostMapping("/addOrUpdate")
-    public String addOrUpdateEvent(@RequestBody EventRequest eventRequest) {
+    public HashMap<String, Object> addOrUpdateEvent(@RequestBody EventRequest eventRequest) {
         EventInformation existingEvent = eventInformationService.findEventByName(eventRequest.getEvent_name());
 
         if (existingEvent != null) {
@@ -65,7 +64,7 @@ public class EventController {
                 if (team != null) {
                     eventTeamService.addEventTeam(new EventTeam(existingEvent.getEvent_number(), team.getTeam_number()));
                 } else {
-                    return "Team not found: " + teamName;
+                    return AjaxResult.fail(-1,"Team not found: " + teamName);
                 }
             }
         } else {
@@ -80,11 +79,11 @@ public class EventController {
                 if (team != null) {
                     eventTeamService.addEventTeam(new EventTeam(eventNumber, team.getTeam_number()));
                 } else {
-                    return "Team not found: " + teamName;
+                    return AjaxResult.fail(-1,"Team not found: " + teamName);
                 }
             }
         }
-        return "Event information processed successfully";
+        return AjaxResult.success(200,"Event information processed successfully");
     }
 
     // 4. Delete the event information according to the specified event number

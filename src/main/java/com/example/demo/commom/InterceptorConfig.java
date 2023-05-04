@@ -9,29 +9,29 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import java.util.ArrayList;
 import java.util.List;
 
-@Configuration
-public class InterceptorConfig implements WebMvcConfigurer {
-
-    @Autowired
-    private LoginInterceptor loginInterceptor;
-
-    List<String> excludes = new ArrayList<String>(){{
-        add("/**/*.html");
-        add("/js/**");
-        add("/css/**");
-        add("/img/**");
-//        add("/editor.md/**");
-        add("/user/login");
-        add("/user/register");
-//        add("/art/detail");
-//        add("/user/myinfobyuid");
-//        add("/art/list");
-//        add("/art/totalpage");
-    }};
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        InterceptorRegistration registration = registry.addInterceptor(loginInterceptor);
-        registration.addPathPatterns("/**");
-        registration.excludePathPatterns(excludes);
-    }
-}
+//@Configuration
+//public class InterceptorConfig implements WebMvcConfigurer {
+//
+////    @Autowired
+////    private LoginInterceptor loginInterceptor;
+////
+////    List<String> excludes = new ArrayList<String>(){{
+////        add("/**/*.html");
+////        add("/js/**");
+////        add("/css/**");
+////        add("/img/**");
+//////        add("/editor.md/**");
+////        add("/user/login");
+////        add("/user/register");
+//////        add("/art/detail");
+//////        add("/user/myinfobyuid");
+//////        add("/art/list");
+//////        add("/art/totalpage");
+////    }};
+////    @Override
+////    public void addInterceptors(InterceptorRegistry registry) {
+////        InterceptorRegistration registration = registry.addInterceptor(loginInterceptor);
+////        registration.addPathPatterns("/**");
+////        registration.excludePathPatterns(excludes);
+////    }
+//}

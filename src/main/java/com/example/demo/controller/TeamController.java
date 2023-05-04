@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.List;
 
 
-
 @RestController
 @RequestMapping("/team")
 public class TeamController {
@@ -77,7 +76,6 @@ public class TeamController {
                 playerInformationService.addPlayer(player);
             }
         }
-
         return "Success";
     }
 

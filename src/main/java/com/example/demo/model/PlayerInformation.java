@@ -20,15 +20,4 @@ public class PlayerInformation {
         this.total_assists = total_assists;
     }
 
-//    public PlayerInformation(String name, String gender, int team, int total_points_scored, int total_assists) {
-//        this.name = name;
-//        this.gender = gender;
-//        this.team = team;
-//        this.total_points_scored = total_points_scored;
-//        this.total_assists = total_assists;
-//    }
-
-
-
-
 }

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
@@ -18,7 +19,9 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/register")
-    public HashMap<String, Object> register(@RequestParam("username") String username, @RequestParam("password") String password, HttpServletRequest request) {
+    public HashMap<String, Object> register(@RequestBody Map<String, String> userData, HttpServletRequest request) {
+        String username = userData.get("username");
+        String password = userData.get("password");
         int result = userService.register(username, password, "N");
         if (result == 0) {
             return AjaxResult.fail(-1, "Registration failed!");
@@ -30,7 +33,9 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public HashMap<String, Object> login(@RequestParam("username") String username, @RequestParam("password") String password, HttpServletRequest request) {
+    public HashMap<String, Object> login(@RequestBody Map<String, String> userData, HttpServletRequest request) {
+        String username = userData.get("username");
+        String password = userData.get("password");
         User user = userService.login(username, password);
         if (user == null) {
             return AjaxResult.fail(-1, "Login failed!");
