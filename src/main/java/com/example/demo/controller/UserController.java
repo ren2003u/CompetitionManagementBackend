@@ -62,6 +62,7 @@ public class UserController {
     }
 
     @ApiOperation(value = "获取登录用户信息", notes = "获取当前登录用户的信息")
+    @PostMapping("/getLoginUser")
     public HashMap<String, Object> getLoginUser(HttpServletRequest request) {
         User user = SessionUtil.getLoginUser(request);
         if (user == null) {
