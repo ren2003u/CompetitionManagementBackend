@@ -11,6 +11,10 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
 
 mybatis:
   mapper-locations: classpath:mapper/**Mapper.xml
@@ -26,6 +30,7 @@ logging:
     org:
       springframework: INFO
       hibernate: ERROR
+
 
 #vue:
 #  client:

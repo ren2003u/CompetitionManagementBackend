@@ -3,7 +3,6 @@ package com.example.demo.controller;
 import com.example.demo.commom.AjaxResult;
 import com.example.demo.model.TeamInformation;
 import com.example.demo.service.EventTeamService;
-import com.example.demo.service.PlayerInformationService;
 import com.example.demo.service.TeamInformationService;
 import com.example.demo.service.UserService;
 import io.swagger.annotations.Api;
@@ -21,8 +20,6 @@ public class TeamController {
     @Autowired
     private TeamInformationService teamInformationService;
 
-    @Autowired
-    private PlayerInformationService playerInformationService;
 
     @Autowired
     private EventTeamService eventTeamService;
