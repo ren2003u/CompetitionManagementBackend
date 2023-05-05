@@ -47,41 +47,20 @@ public class EventController {
 
     // 3. Modify or add event information
     @PostMapping("/addOrUpdate")
-    public HashMap<String, Object> addOrUpdateEvent(@RequestBody EventRequest eventRequest) {
-        EventInformation existingEvent = eventInformationService.findEventByName(eventRequest.getEvent_name());
+    public HashMap<String, Object> addOrUpdateEvent(@RequestBody EventInformation eventInformation) {
+        EventInformation existingEvent = eventInformationService.findEventByName(eventInformation.getEvent_name());
 
         if (existingEvent != null) {
             // Update event information
-            existingEvent.setEvent_name(eventRequest.getEvent_name());
-            existingEvent.setEvent_location(eventRequest.getEvent_location());
-            existingEvent.setEvent_time(eventRequest.getEvent_time());
+            existingEvent.setEvent_name(existingEvent.getEvent_name());
+            existingEvent.setEvent_location(eventInformation.getEvent_location());
+            existingEvent.setEvent_time(eventInformation.getEvent_time());
             eventInformationService.updateEvent(existingEvent);
 
-            // Update event teams
-            eventTeamService.deleteEventTeamsByEventNumber(existingEvent.getEvent_number());
-            for (String teamName : eventRequest.getTeam_names()) {
-                TeamInformation team = teamInformationService.findTeamByName(teamName);
-                if (team != null) {
-                    eventTeamService.addEventTeam(new EventTeam(0,existingEvent.getEvent_number(), team.getTeam_number()));
-                } else {
-                    return AjaxResult.fail(-1,"Team not found: " + teamName);
-                }
-            }
         } else {
             // Add new event
-            EventInformation newEvent = new EventInformation(0,eventRequest.getEvent_name(), eventRequest.getEvent_time(),eventRequest.getEvent_location());
+            EventInformation newEvent = new EventInformation(0,eventInformation.getEvent_name(), eventInformation.getEvent_time(),eventInformation.getEvent_location());
             eventInformationService.addEvent(newEvent);
-            int eventNumber = eventInformationService.findEventByName(eventRequest.getEvent_name()).getEvent_number();
-
-            // Add event teams
-            for (String teamName : eventRequest.getTeam_names()) {
-                TeamInformation team = teamInformationService.findTeamByName(teamName);
-                if (team != null) {
-                    eventTeamService.addEventTeam(new EventTeam(0,eventNumber, team.getTeam_number()));
-                } else {
-                    return AjaxResult.fail(-1,"Team not found: " + teamName);
-                }
-            }
         }
         return AjaxResult.success(200,"Event information processed successfully");
     }
@@ -91,6 +70,8 @@ public class EventController {
     public String deleteEvent(@PathVariable int event_number) {
         eventTeamService.deleteEventTeamsByEventNumber(event_number);
         eventInformationService.deleteEvent(event_number);
-        return "Event deleted successfully";
+        return "删除赛事信息成功.";
     }
+
+
 }

@@ -9,6 +9,7 @@ import java.util.List;
 
 @Service
 public class EventTeamService {
+
     @Autowired
     private EventTeamMapper eventTeamMapper;
 
@@ -38,5 +39,16 @@ public class EventTeamService {
 
     public List<EventTeam> getEventTeamsByEventNumber(int eventNumber) {
         return eventTeamMapper.getEventTeamsByEventNumber(eventNumber);
+    }
+    public EventTeam judgeIfEventTeamExist(int event_number,int team_number){
+        return eventTeamMapper.judgeIfEventTeamExist(event_number,team_number);
+    }
+
+    public void deleteEventTeamsByEventNumberAndTeamNumber(int event_number,int team_number){
+        eventTeamMapper.deleteEventTeamsByEventNumberAndTeamNumber(event_number,team_number);
+    }
+
+    public void deleteEventTeamsByTeamNumber(int team_number){
+        eventTeamMapper.deleteEventTeamsByTeamNumber(team_number);
     }
 }

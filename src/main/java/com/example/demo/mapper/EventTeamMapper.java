@@ -15,5 +15,11 @@ public interface EventTeamMapper {
     void deleteEventTeam(int id);
     void deleteEventTeamsByEventNumber(int event_number);
 
+    void deleteEventTeamsByTeamNumber(int team_number);
+
     List<EventTeam> getEventTeamsByEventNumber(int eventNumber);
+
+    EventTeam judgeIfEventTeamExist(int event_number,int team_number);
+
+    void deleteEventTeamsByEventNumberAndTeamNumber(int event_number,int team_number);
 }

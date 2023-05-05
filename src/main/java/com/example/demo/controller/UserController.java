@@ -19,10 +19,9 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/register")
-    public HashMap<String, Object> register(@RequestBody Map<String, String> userData, HttpServletRequest request) {
-        String username = userData.get("username");
-        String password = userData.get("password");
-        int result = userService.register(username, password, "N");
+    public <status> HashMap<String, Object> register(@RequestBody String username, String password,String status, HttpServletRequest request) {
+
+        int result = userService.register(username, password, status);
         if (result == 0) {
             return AjaxResult.fail(-1, "Registration failed!");
         }
@@ -45,8 +44,8 @@ public class UserController {
         return AjaxResult.success(user);
     }
 
-    @GetMapping("/is-admin")
-    public HashMap<String, Object> isAdmin(HttpServletRequest request) {
+    @GetMapping("/status")
+    public HashMap<String, Object> getStatus(HttpServletRequest request) {
         User user = SessionUtil.getLoginUser(request);
         if (user == null) {
             return AjaxResult.fail(-1, "User not logged in");
@@ -55,7 +54,7 @@ public class UserController {
         if (dbUser == null) {
             return AjaxResult.fail(-1, "User not found");
         }
-        boolean isAdmin = "Y".equalsIgnoreCase(dbUser.getIs_admin());
-        return AjaxResult.success(isAdmin);
+        String status = dbUser.getStatus();
+        return AjaxResult.success(status);
     }
 }

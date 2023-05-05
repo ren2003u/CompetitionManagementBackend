@@ -4,7 +4,7 @@
 <mapper namespace="com.example.demo.mapper.TeamInformationMapper">
 
     <select id="findAllTeams" resultType="com.example.demo.model.TeamInformation">
-        SELECT * FROM team_information ORDER BY total_score DESC, total_assists DESC, team_number ASC;
+        SELECT * FROM team_information ORDER BY total_score DESC, team_number ASC;
     </select>
 
     <select id="findTeamByNumber" resultType="com.example.demo.model.TeamInformation">
@@ -20,11 +20,6 @@
         UPDATE team_information SET
         team_name=#{team_name},
         team_affiliation_college=#{team_affiliation_college},
-        captain_name=#{captain_name},
-        player_1_name=#{player_1_name},
-        player_2_name=#{player_2_name},
-        total_score=#{total_score},
-        total_assists=#{total_assists}
         WHERE team_number=#{team_number};
     </update>
 

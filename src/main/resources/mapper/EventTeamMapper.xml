@@ -30,11 +30,20 @@
     <delete id="deleteEventTeamsByEventNumber" parameterType="int">
         DELETE FROM event_team WHERE event_number = #{event_number}
     </delete>
+    <delete id="deleteEventTeamsByEventNumberAndTeamNumber">
+        DELETE FROM event_team WHERE event_number = #{event_number} and team_number = #{team_number}
+    </delete>
+    <delete id="deleteEventTeamsByTeamNumber">
+        DELETE FROM event_team WHERE team_number = #{team_number}
+    </delete>
 
     <select id="getEventTeamsByEventNumber" resultType="com.example.demo.model.EventTeam">
         SELECT *
         FROM event_team
         WHERE event_number = #{eventNumber}
+    </select>
+    <select id="judgeIfEventTeamExist" resultType="com.example.demo.model.EventTeam">
+        select * from event_team WHERE event_number = #{eventNumber} and team_number = #{team_number}
     </select>
 
 </mapper>
