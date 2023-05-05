@@ -6,6 +6,11 @@
         SET team_name = #{new_team_name}
         WHERE team_name = #{ori_team_name};
     </update>
+    <update id="userJoinIntoTeam">
+        UPDATE user
+        SET team_name = #{team_name}
+        WHERE username = #{username};
+    </update>
     <select id="login" resultType="com.example.demo.model.User">
         SELECT * FROM user
         WHERE username = #{username} AND password = #{password}
@@ -17,6 +22,9 @@
     <select id="findByUsername" resultType="com.example.demo.model.User">
         SELECT * FROM user
         WHERE username = #{username}
+    </select>
+    <select id="findByTeamname" resultType="com.example.demo.model.User">
+        select * from user where team_name = #{team_name}
     </select>
 
 </mapper>

@@ -44,7 +44,7 @@ public class UserController {
         return AjaxResult.success(user);
     }
 
-    @GetMapping("/status")
+    @GetMapping("/getLoginUserStatus")
     public HashMap<String, Object> getStatus(HttpServletRequest request) {
         User user = SessionUtil.getLoginUser(request);
         if (user == null) {
@@ -56,5 +56,19 @@ public class UserController {
         }
         String status = dbUser.getStatus();
         return AjaxResult.success(status);
+    }
+
+    @GetMapping("/getLoginUser")
+    public HashMap<String, Object> getLoginUser(HttpServletRequest request) {
+        User user = SessionUtil.getLoginUser(request);
+        if (user == null) {
+            return AjaxResult.fail(-1, "User not logged in");
+        }
+        User dbUser = userService.findByUsername(user.getUsername());
+        if (dbUser == null) {
+            return AjaxResult.fail(-1, "User not found");
+        }
+
+        return AjaxResult.success(dbUser);
     }
 }

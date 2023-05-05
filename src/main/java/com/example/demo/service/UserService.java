@@ -6,6 +6,8 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService {
     @Autowired
@@ -25,5 +27,9 @@ public class UserService {
 
     public int updateByTeamname(String ori_team_name,String new_team_name){
         return userMapper.updateByTeamname(ori_team_name, new_team_name);
+    }
+
+    public List<User> findByTeamname(String team_name){
+        return userMapper.findByTeamname(team_name);
     }
 }

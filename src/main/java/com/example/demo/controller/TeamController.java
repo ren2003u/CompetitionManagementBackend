@@ -74,7 +74,7 @@ public class TeamController {
         userService.updateByTeamname(teamInformationService.findTeamByNumber(team_number).getTeam_name(),"");
         eventTeamService.deleteEventTeamsByTeamNumber(team_number);
         teamInformationService.deleteTeam(team_number);
-        return "删除成功.";
+        return "删除队伍成功.";
     }
 }
 
