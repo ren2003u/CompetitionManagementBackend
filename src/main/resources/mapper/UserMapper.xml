@@ -11,6 +11,11 @@
         SET team_name = #{team_name}
         WHERE username = #{username};
     </update>
+    <update id="changeUserScore">
+        UPDATE user
+        SET score = #{score}
+        WHERE username = #{username};
+    </update>
     <select id="login" resultType="com.example.demo.model.User">
         SELECT * FROM user
         WHERE username = #{username} AND password = #{password}

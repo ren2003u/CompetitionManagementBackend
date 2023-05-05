@@ -5,6 +5,8 @@ import com.example.demo.commom.AjaxResult;
 import com.example.demo.commom.SessionUtil;
 import com.example.demo.model.User;
 import com.example.demo.service.UserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,13 +17,13 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
-
+@Api(tags = "队员控制器")
 @RestController
 @RequestMapping("/player")
 public class TeamUserController {
     @Autowired
     private UserService userService;
-
+    @ApiOperation(value = "队员加入团队", notes = "根据提供的团队名称和用户名，将队员加入到团队中")
     @PostMapping("/joinIntoTeam")
     public HashMap<String, Object> UserJoinIntoTeam(String team_name, String username, HttpServletRequest httpServletRequest){
         if(!Objects.equals(userService.findByUsername(username).getTeam_name(), "")){
@@ -53,7 +55,7 @@ public class TeamUserController {
         }
         return AjaxResult.success(200,"加入成功！");
     }
-
+    @ApiOperation(value = "队员退出团队", notes = "根据提供的团队名称和用户名，队员退出团队")
     @PostMapping("/withdrawFromTeam")
     public HashMap<String, Object> userWithdrawFormTeam(String team_name, String username, HttpServletRequest httpServletRequest){
         User user = SessionUtil.getLoginUser(httpServletRequest);
@@ -70,7 +72,7 @@ public class TeamUserController {
         userService.updateByTeamname(userService.findByUsername(username).getTeam_name(),"");
         return AjaxResult.success(200,"退出队伍成功！");
     }
-
+    @ApiOperation(value = "队长移除队员", notes = "根据提供的团队名称和队员名称，队长从团队中移除队员")
     @DeleteMapping("/captainDeletePlayer")
     public HashMap<String, Object> captainDeletePlayer(String team_name, String playerName, HttpServletRequest httpServletRequest){
         User user = SessionUtil.getLoginUser(httpServletRequest);

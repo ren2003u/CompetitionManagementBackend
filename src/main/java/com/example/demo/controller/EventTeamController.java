@@ -5,13 +5,15 @@ import com.example.demo.model.EventTeam;
 import com.example.demo.model.TeamInformation;
 import com.example.demo.service.EventTeamService;
 import com.example.demo.service.TeamInformationService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
+@Api(tags = "赛事团队控制器")
 @RestController
 @RequestMapping("/event-team")
 public class EventTeamController {
@@ -21,7 +23,7 @@ public class EventTeamController {
 
     @Autowired
     private TeamInformationService teamInformationService;
-
+    @ApiOperation(value = "根据赛事编号获取参赛团队", notes = "返回指定赛事编号的所有参赛团队名称")
     @GetMapping("/event/{eventNumber}")
     public List<String> getEventTeamsByEventNumber(@PathVariable("eventNumber") int eventNumber) {
         List<EventTeam> eventTeams = eventTeamService.getEventTeamsByEventNumber(eventNumber);
@@ -34,7 +36,7 @@ public class EventTeamController {
 
         return teamNames;
     }
-
+    @ApiOperation(value = "团队加入赛事", notes = "队长将团队加入指定赛事")
     @PostMapping("/joinEvent")
     public HashMap<String, Object> captainJoinEvent(int event_number, String team_name)
     {
@@ -46,7 +48,7 @@ public class EventTeamController {
         eventTeamService.addEventTeam(eventTeam);
         return AjaxResult.success(200,"加入成功");
     }
-
+    @ApiOperation(value = "团队退出赛事", notes = "队长将团队从指定赛事中退出")
     @PostMapping("/withdrawFromEvent")
     public HashMap<String, Object> captainWithdrawEvent(int event_number, String team_name)
     {

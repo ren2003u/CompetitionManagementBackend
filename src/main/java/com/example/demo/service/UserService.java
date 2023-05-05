@@ -32,4 +32,8 @@ public class UserService {
     public List<User> findByTeamname(String team_name){
         return userMapper.findByTeamname(team_name);
     }
+
+    public int changeUserScore(String username,int score){
+        return userMapper.changeUserScore(username,score);
+    }
 }
