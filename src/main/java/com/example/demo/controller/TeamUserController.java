@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Objects;
 @Api(tags = "队员控制器")
 @RestController
-@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin(origins = "http://localhost:9528")
 @RequestMapping("/player")
 public class TeamUserController {
     @Autowired
