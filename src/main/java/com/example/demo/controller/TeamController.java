@@ -30,7 +30,7 @@ public class TeamController {
     public HashMap findAllTeams() {
         List<TeamInformation> teams = teamInformationService.findAllTeams();
         if (teams == null || teams.isEmpty()) {
-            return AjaxResult.fail(-1, "No teams found!");
+            return AjaxResult.fail(-1, "当前没有队伍!");
         }
         return AjaxResult.success(teams);
     }
@@ -39,7 +39,7 @@ public class TeamController {
     public HashMap findTeamByName(@PathVariable String team_name) {
         TeamInformation team = teamInformationService.findTeamByName(team_name);
         if (team == null) {
-            return AjaxResult.fail(-1, "Team not found!");
+            return AjaxResult.fail(-1, "该队伍未找到!");
         }
         return AjaxResult.success(team);
     }
