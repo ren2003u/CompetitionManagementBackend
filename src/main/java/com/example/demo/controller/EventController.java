@@ -16,6 +16,7 @@ import java.util.List;
 
 
 @RestController
+@CrossOrigin(origins = "http://localhost:8080")
 @RequestMapping("/events")
 @Api(value = "活动控制器", tags = "活动管理接口")
 public class EventController {

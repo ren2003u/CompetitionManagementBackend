@@ -8,10 +8,7 @@ import com.example.demo.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -19,6 +16,7 @@ import java.util.List;
 import java.util.Objects;
 @Api(tags = "队员控制器")
 @RestController
+@CrossOrigin(origins = "http://localhost:8080")
 @RequestMapping("/player")
 public class TeamUserController {
     @Autowired
