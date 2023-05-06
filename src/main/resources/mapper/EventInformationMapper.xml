@@ -32,4 +32,5 @@
     <select id="findEventByName" parameterType="String" resultType="com.example.demo.model.EventInformation">
         SELECT * FROM event_information WHERE event_name = #{event_name}
     </select>
+
 </mapper>

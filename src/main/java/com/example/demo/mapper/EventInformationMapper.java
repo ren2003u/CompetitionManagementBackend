@@ -9,7 +9,7 @@ import java.util.List;
 public interface EventInformationMapper {
     List<EventInformation> findAllEvents();
 
-    EventInformation findEventByNumber(int event_number);
+    EventInformation findEventByEventNumber(int event_number);
 
     void addEvent(EventInformation eventInformation);
 

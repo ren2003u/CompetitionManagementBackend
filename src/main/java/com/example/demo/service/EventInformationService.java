@@ -17,7 +17,7 @@ public class EventInformationService {
     }
 
     public EventInformation findEventByNumber(int event_number) {
-        return eventInformationMapper.findEventByNumber(event_number);
+        return eventInformationMapper.findEventByEventNumber(event_number);
     }
 
     public void addEvent(EventInformation eventInformation) {
