@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 @Api(tags = "用户控制器")
@@ -90,5 +91,14 @@ public class UserController {
         }
         userService.changeUserScore(dbUser.getUsername(), score);
         return AjaxResult.success(200,"修改成功");
+    }
+    @ApiOperation(value = "查询队伍中队员", notes = "根据队伍名查询对应队伍的队员")
+    @PostMapping("/searchUsersByTeamName")
+    public HashMap<String, Object> searchUsersByTeamName(String team_name){
+        if(team_name == null){
+            return AjaxResult.fail(-1,"队名不能为空.");
+        }
+        List<User> users = userService.findByTeamname(team_name);
+        return AjaxResult.success(users);
     }
 }

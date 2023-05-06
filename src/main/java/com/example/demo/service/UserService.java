@@ -29,6 +29,7 @@ public class UserService {
         return userMapper.updateByTeamname(ori_team_name, new_team_name);
     }
 
+
     public List<User> findByTeamname(String team_name){
         return userMapper.findByTeamname(team_name);
     }
