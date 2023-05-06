@@ -25,7 +25,7 @@ public class EventTeamController {
     @Autowired
     private TeamInformationService teamInformationService;
     @ApiOperation(value = "根据赛事编号获取参赛团队", notes = "返回指定赛事编号的所有参赛团队名称")
-    @GetMapping("/event/{eventNumber}")
+    @RequestMapping("/event/{eventNumber}")
     public List<String> getEventTeamsByEventNumber(@PathVariable("eventNumber") int eventNumber) {
         List<EventTeam> eventTeams = eventTeamService.getEventTeamsByEventNumber(eventNumber);
         List<String> teamNames = new ArrayList<>();
@@ -38,7 +38,7 @@ public class EventTeamController {
         return teamNames;
     }
     @ApiOperation(value = "团队加入赛事", notes = "队长将团队加入指定赛事")
-    @PostMapping("/joinEvent")
+    @RequestMapping("/joinEvent")
     public HashMap<String, Object> captainJoinEvent(int event_number, String team_name)
     {
         int team_number = teamInformationService.findTeamByName(team_name).getTeam_number();
@@ -50,7 +50,7 @@ public class EventTeamController {
         return AjaxResult.success(200,"加入成功");
     }
     @ApiOperation(value = "团队退出赛事", notes = "队长将团队从指定赛事中退出")
-    @PostMapping("/withdrawFromEvent")
+    @RequestMapping("/withdrawFromEvent")
     public HashMap<String, Object> captainWithdrawEvent(int event_number, String team_name)
     {
         int team_number = teamInformationService.findTeamByName(team_name).getTeam_number();

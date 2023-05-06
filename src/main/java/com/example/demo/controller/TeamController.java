@@ -27,7 +27,7 @@ public class TeamController {
     @Autowired
     private UserService userService;
     @ApiOperation(value = "查询所有团队", notes = "返回数据库中所有团队的信息")
-    @GetMapping("/list")
+    @RequestMapping("/list")
     public HashMap findAllTeams() {
         List<TeamInformation> teams = teamInformationService.findAllTeams();
         if (teams == null || teams.isEmpty()) {
@@ -36,7 +36,7 @@ public class TeamController {
         return AjaxResult.success(teams);
     }
     @ApiOperation(value = "根据团队名称查询", notes = "返回指定团队名称的团队信息")
-    @GetMapping("/byname/{team_name}")
+    @RequestMapping("/byname/{team_name}")
     public HashMap findTeamByName(@PathVariable String team_name) {
         TeamInformation team = teamInformationService.findTeamByName(team_name);
         if (team == null) {
@@ -45,7 +45,7 @@ public class TeamController {
         return AjaxResult.success(team);
     }
     @ApiOperation(value = "添加或更新团队信息", notes = "根据提供的团队信息添加新团队或更新现有团队")
-    @PostMapping("/addOrUpdate")
+    @RequestMapping("/addOrUpdate")
     public String addOrUpdateTeam(@RequestBody TeamInformation teamInformation) {
         TeamInformation existingTeam = null;
         if(!(findTeamByName(teamInformation.getTeam_name()).get("data") instanceof String)) {
@@ -65,7 +65,7 @@ public class TeamController {
         return "操作成功";
     }
     @ApiOperation(value = "删除指定团队", notes = "根据团队编号删除指定团队")
-    @DeleteMapping("/delete/{team_number}")
+    @RequestMapping("/delete/{team_number}")
     public String deleteTeam(@PathVariable("team_number") int team_number) {
         userService.updateByTeamname(teamInformationService.findTeamByNumber(team_number).getTeam_name(),"");
         eventTeamService.deleteEventTeamsByTeamNumber(team_number);

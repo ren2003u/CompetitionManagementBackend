@@ -22,7 +22,7 @@ public class TeamUserController {
     @Autowired
     private UserService userService;
     @ApiOperation(value = "队员加入团队", notes = "根据提供的团队名称和用户名，将队员加入到团队中")
-    @PostMapping("/joinIntoTeam")
+    @RequestMapping("/joinIntoTeam")
     public HashMap<String, Object> UserJoinIntoTeam(String team_name, String username, HttpServletRequest httpServletRequest){
         if(!Objects.equals(userService.findByUsername(username).getTeam_name(), "")){
             return AjaxResult.fail(-1,"您已加入其他队伍，无法加入新队伍.");
@@ -54,7 +54,7 @@ public class TeamUserController {
         return AjaxResult.success(200,"加入成功！");
     }
     @ApiOperation(value = "队员退出团队", notes = "根据提供的团队名称和用户名，队员退出团队")
-    @PostMapping("/withdrawFromTeam")
+    @RequestMapping("/withdrawFromTeam")
     public HashMap<String, Object> userWithdrawFormTeam(String team_name, String username, HttpServletRequest httpServletRequest){
         User user = SessionUtil.getLoginUser(httpServletRequest);
         if (user == null) {
@@ -71,7 +71,7 @@ public class TeamUserController {
         return AjaxResult.success(200,"退出队伍成功！");
     }
     @ApiOperation(value = "队长移除队员", notes = "根据提供的团队名称和队员名称，队长从团队中移除队员")
-    @DeleteMapping("/captainDeletePlayer")
+    @RequestMapping("/captainDeletePlayer")
     public HashMap<String, Object> captainDeletePlayer(String team_name, String playerName, HttpServletRequest httpServletRequest){
         User user = SessionUtil.getLoginUser(httpServletRequest);
         if (user == null) {

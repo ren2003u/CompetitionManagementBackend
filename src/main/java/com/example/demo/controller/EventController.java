@@ -31,14 +31,14 @@ public class EventController {
     private TeamInformationService teamInformationService;
 
     // 1. Returns information about all events currently in the database
-    @GetMapping("/list")
+    @RequestMapping("/list")
     @ApiOperation(value = "获取所有活动信息", notes = "返回数据库中所有活动的信息")
     public List<EventInformation> getAllEvents() {
         return eventInformationService.findAllEvents();
     }
 
     // 2. Look up event information for a specific event name
-    @GetMapping("/byname/{event_name}")
+    @RequestMapping("/byname/{event_name}")
     @ApiOperation(value = "根据活动名称查询活动信息", notes = "根据给定的活动名称查找活动信息")
     public HashMap getEventByName(@PathVariable String event_name) {
         //todo: The return value is incomplete
@@ -50,7 +50,7 @@ public class EventController {
     }
 
     // 3. Modify or add event information
-    @PostMapping("/addOrUpdate")
+    @RequestMapping("/addOrUpdate")
     @ApiOperation(value = "添加或更新活动信息", notes = "根据给定的活动信息添加新活动或更新已有活动信息")
     public HashMap<String, Object> addOrUpdateEvent(@RequestBody EventInformation eventInformation) {
         EventInformation existingEvent = eventInformationService.findEventByName(eventInformation.getEvent_name());
@@ -71,7 +71,7 @@ public class EventController {
     }
 
     // 4. Delete the event information according to the specified event number
-    @DeleteMapping("/delete/{event_number}")
+    @RequestMapping("/delete/{event_number}")
     @ApiOperation(value = "根据活动编号删除活动信息", notes = "根据指定的活动编号删除活动信息")
     public String deleteEvent(@PathVariable int event_number) {
         eventTeamService.deleteEventTeamsByEventNumber(event_number);

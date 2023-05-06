@@ -23,7 +23,7 @@ public class UserController {
     @Autowired
     private UserService userService;
     @ApiOperation(value = "用户注册", notes = "根据提供的用户名、密码和身份，注册新用户")
-    @PostMapping("/register")
+    @RequestMapping("/register")
     public <status> HashMap<String, Object> register(@RequestBody String username, String password,String status, HttpServletRequest request) {
 
         int result = userService.register(username, password, status);
@@ -36,7 +36,7 @@ public class UserController {
         return AjaxResult.success("User registered successfully.");
     }
     @ApiOperation(value = "用户登录", notes = "根据提供的用户名和密码，用户登录")
-    @PostMapping("/login")
+    @RequestMapping("/login")
     public HashMap<String, Object> login(@RequestBody Map<String, String> userData, HttpServletRequest request) {
         String username = userData.get("username");
         String password = userData.get("password");
@@ -49,7 +49,7 @@ public class UserController {
         return AjaxResult.success(user);
     }
     @ApiOperation(value = "获取登录用户的状态", notes = "获取当前登录用户的状态")
-    @GetMapping("/getLoginUserStatus")
+    @RequestMapping("/getLoginUserStatus")
     public HashMap<String, Object> getStatus(HttpServletRequest request) {
         User user = SessionUtil.getLoginUser(request);
         if (user == null) {
@@ -64,7 +64,7 @@ public class UserController {
     }
 
     @ApiOperation(value = "获取登录用户信息", notes = "获取当前登录用户的信息")
-    @PostMapping("/getLoginUser")
+    @RequestMapping("/getLoginUser")
     public HashMap<String, Object> getLoginUser(HttpServletRequest request) {
         User user = SessionUtil.getLoginUser(request);
         if (user == null) {
@@ -77,7 +77,7 @@ public class UserController {
         return AjaxResult.success(dbUser);
     }
     @ApiOperation(value = "修改用户分数", notes = "管理员可以修改用户的分数")
-    @PostMapping("/changeUserScore")
+    @RequestMapping("/changeUserScore")
     public HashMap<String, Object> changeUserScore(int score, HttpServletRequest httpServletRequest){
         User user = SessionUtil.getLoginUser(httpServletRequest);
         if (user == null) {
@@ -94,7 +94,7 @@ public class UserController {
         return AjaxResult.success(200,"修改成功");
     }
     @ApiOperation(value = "查询队伍中队员", notes = "根据队伍名查询对应队伍的队员")
-    @PostMapping("/searchUsersByTeamName")
+    @RequestMapping("/searchUsersByTeamName")
     public HashMap<String, Object> searchUsersByTeamName(String team_name){
         if(team_name == null){
             return AjaxResult.fail(-1,"队名不能为空.");
