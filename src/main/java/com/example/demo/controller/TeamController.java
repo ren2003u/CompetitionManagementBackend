@@ -20,7 +20,6 @@ public class TeamController {
     @Autowired
     private TeamInformationService teamInformationService;
 
-
     @Autowired
     private EventTeamService eventTeamService;
 
