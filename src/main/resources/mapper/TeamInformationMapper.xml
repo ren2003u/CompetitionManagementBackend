@@ -19,7 +19,7 @@
     <update id="updateTeam" parameterType="com.example.demo.model.TeamInformation">
         UPDATE team_information SET
         team_name=#{team_name},
-        team_affiliation_college=#{team_affiliation_college},
+        team_affiliation_college=#{team_affiliation_college}
         WHERE team_number=#{team_number};
     </update>
 
