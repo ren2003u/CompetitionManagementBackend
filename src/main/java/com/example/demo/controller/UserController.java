@@ -37,9 +37,7 @@ public class UserController {
     }
     @ApiOperation(value = "用户登录", notes = "根据提供的用户名和密码，用户登录")
     @RequestMapping("/login")
-    public HashMap<String, Object> login(@RequestBody Map<String, String> userData, HttpServletRequest request) {
-        String username = userData.get("username");
-        String password = userData.get("password");
+    public HashMap<String, Object> login(@RequestParam("username") String username, @RequestParam("password")String password, HttpServletRequest request) {
         User user = userService.login(username, password);
         if (user == null) {
             return AjaxResult.fail(-1, "Login failed!");
