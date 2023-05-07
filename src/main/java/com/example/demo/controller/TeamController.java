@@ -10,8 +10,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
+import java.util.Map.Entry;
 
 @Api(tags = "团队控制器")
 @RestController
@@ -71,6 +71,27 @@ public class TeamController {
         eventTeamService.deleteEventTeamsByTeamNumber(team_number);
         teamInformationService.deleteTeam(team_number);
         return "删除队伍成功.";
+    }
+
+    @ApiOperation(value = "按学院排序", notes = "返回学院按照比分降序排序的结果")
+    @RequestMapping("/getRankByTeamCollege")
+    public HashMap getRankByTeamCollege() {
+        List<TeamInformation> teams = teamInformationService.findAllTeams();
+        if (teams == null || teams.isEmpty()) {
+            return AjaxResult.fail(-1, "当前没有队伍!");
+        }
+
+        Map<String, Integer> collegeAndScoreMap = new HashMap<>();
+        for (TeamInformation teamInformation : teams) {
+            String college = teamInformation.getTeam_affiliation_college();
+            int totalScore = teamInformation.getTotal_score();
+            collegeAndScoreMap.put(college, collegeAndScoreMap.getOrDefault(college, 0) + totalScore);
+        }
+
+        List<Entry<String, Integer>> collegeAndScoreList = new ArrayList<>(collegeAndScoreMap.entrySet());
+        collegeAndScoreList.sort(Comparator.comparingInt(Entry<String, Integer>::getValue).reversed());
+
+        return AjaxResult.success(collegeAndScoreList);
     }
 }
 
