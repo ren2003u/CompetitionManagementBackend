@@ -21,8 +21,7 @@
         WHERE username = #{username} AND password = #{password}
     </select>
     <insert id="register">
-        INSERT INTO user (username, password, status)
-        VALUES (#{username}, #{password}, #{status})
+        INSERT INTO user (username, password, status) VALUES (#{username}, #{password}, #{status})
     </insert>
     <select id="findByUsername" resultType="com.example.demo.model.User">
         SELECT * FROM user
