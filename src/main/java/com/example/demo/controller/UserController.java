@@ -24,7 +24,7 @@ public class UserController {
     private UserService userService;
     @ApiOperation(value = "用户注册", notes = "根据提供的用户名、密码和身份，注册新用户")
     @RequestMapping("/register")
-    public <status> HashMap<String, Object> register(@RequestBody String username, String password,String status, HttpServletRequest request) {
+    public <status> HashMap<String, Object> register(@RequestParam("username") String username, @RequestParam("password")String password,@RequestParam("status")String status, HttpServletRequest request) {
 
         int result = userService.register(username, password, status);
         if (result == 0) {
@@ -78,7 +78,7 @@ public class UserController {
     }
     @ApiOperation(value = "修改用户分数", notes = "管理员可以修改用户的分数")
     @RequestMapping("/changeUserScore")
-    public HashMap<String, Object> changeUserScore(@RequestBody int score, HttpServletRequest httpServletRequest){
+    public HashMap<String, Object> changeUserScore(@RequestParam("score") int score, HttpServletRequest httpServletRequest){
         User user = SessionUtil.getLoginUser(httpServletRequest);
         if (user == null) {
             return AjaxResult.fail(-1, "User not logged in");
@@ -95,7 +95,7 @@ public class UserController {
     }
     @ApiOperation(value = "查询队伍中队员", notes = "根据队伍名查询对应队伍的队员")
     @RequestMapping("/searchUsersByTeamName")
-    public HashMap<String, Object> searchUsersByTeamName(@RequestBody String team_name){
+    public HashMap<String, Object> searchUsersByTeamName(@RequestParam("team_name") String team_name){
         System.out.println(team_name);
         if(team_name == null){
             return AjaxResult.fail(-1,"队名不能为空.");

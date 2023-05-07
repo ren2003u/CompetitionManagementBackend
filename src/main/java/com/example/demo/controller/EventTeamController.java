@@ -39,7 +39,7 @@ public class EventTeamController {
     }
     @ApiOperation(value = "团队加入赛事", notes = "队长将团队加入指定赛事")
     @RequestMapping("/joinEvent")
-    public HashMap<String, Object> captainJoinEvent(@RequestBody int event_number, String team_name)
+    public HashMap<String, Object> captainJoinEvent(@RequestParam("event_number") int event_number, @RequestParam("team_name")String team_name)
     {
         int team_number = teamInformationService.findTeamByName(team_name).getTeam_number();
         if(eventTeamService.judgeIfEventTeamExist(event_number,team_number) != null){
@@ -51,7 +51,7 @@ public class EventTeamController {
     }
     @ApiOperation(value = "团队退出赛事", notes = "队长将团队从指定赛事中退出")
     @RequestMapping("/withdrawFromEvent")
-    public HashMap<String, Object> captainWithdrawEvent(@RequestBody int event_number, String team_name)
+    public HashMap<String, Object> captainWithdrawEvent(@RequestParam("event_number") int event_number, @RequestParam("team_name")String team_name)
     {
         int team_number = teamInformationService.findTeamByName(team_name).getTeam_number();
         if(eventTeamService.judgeIfEventTeamExist(event_number,team_number) == null){

@@ -40,7 +40,7 @@ public class EventController {
     // 2. Look up event information for a specific event name
     @RequestMapping("/byname/{event_name}")
     @ApiOperation(value = "根据活动名称查询活动信息", notes = "根据给定的活动名称查找活动信息")
-    public HashMap getEventByName(@PathVariable String event_name) {
+    public HashMap getEventByName(@PathVariable("event_name") String event_name) {
         //todo: The return value is incomplete
         EventInformation event = eventInformationService.findEventByName(event_name);
         if (event == null) {
@@ -73,7 +73,7 @@ public class EventController {
     // 4. Delete the event information according to the specified event number
     @RequestMapping("/delete/{event_number}")
     @ApiOperation(value = "根据活动编号删除活动信息", notes = "根据指定的活动编号删除活动信息")
-    public String deleteEvent(@PathVariable int event_number) {
+    public String deleteEvent(@PathVariable("event_number") int event_number) {
         eventTeamService.deleteEventTeamsByEventNumber(event_number);
         eventInformationService.deleteEvent(event_number);
         return "Deleted event information successfully.";

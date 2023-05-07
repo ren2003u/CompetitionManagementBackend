@@ -37,7 +37,7 @@ public class TeamController {
     }
     @ApiOperation(value = "根据团队名称查询", notes = "返回指定团队名称的团队信息")
     @RequestMapping("/byname/{team_name}")
-    public HashMap findTeamByName(@PathVariable String team_name) {
+    public HashMap findTeamByName(@PathVariable("team_name") String team_name) {
         TeamInformation team = teamInformationService.findTeamByName(team_name);
         if (team == null) {
             return AjaxResult.fail(-1, "该队伍未找到!");

@@ -23,7 +23,7 @@ public class TeamUserController {
     private UserService userService;
     @ApiOperation(value = "队员加入团队", notes = "根据提供的团队名称和用户名，将队员加入到团队中")
     @RequestMapping("/joinIntoTeam")
-    public HashMap<String, Object> UserJoinIntoTeam(@RequestBody String team_name, String username, HttpServletRequest httpServletRequest){
+    public HashMap<String, Object> UserJoinIntoTeam(@RequestParam("team_name") String team_name, @RequestParam("username")String username, HttpServletRequest httpServletRequest){
         if(!Objects.equals(userService.findByUsername(username).getTeam_name(), "")){
             return AjaxResult.fail(-1,"您已加入其他队伍，无法加入新队伍.");
         }
@@ -55,7 +55,7 @@ public class TeamUserController {
     }
     @ApiOperation(value = "队员退出团队", notes = "根据提供的团队名称和用户名，队员退出团队")
     @RequestMapping("/withdrawFromTeam")
-    public HashMap<String, Object> userWithdrawFormTeam(@RequestBody String team_name, String username, HttpServletRequest httpServletRequest){
+    public HashMap<String, Object> userWithdrawFormTeam(@RequestParam("team_name") String team_name, @RequestParam("username")String username, HttpServletRequest httpServletRequest){
         User user = SessionUtil.getLoginUser(httpServletRequest);
         if (user == null) {
             return AjaxResult.fail(-1, "用户未登录");
@@ -72,7 +72,7 @@ public class TeamUserController {
     }
     @ApiOperation(value = "队长移除队员", notes = "根据提供的团队名称和队员名称，队长从团队中移除队员")
     @RequestMapping("/captainDeletePlayer")
-    public HashMap<String, Object> captainDeletePlayer(@RequestBody String team_name, String playerName, HttpServletRequest httpServletRequest){
+    public HashMap<String, Object> captainDeletePlayer(@RequestParam("team_name") String team_name, @RequestParam("playerName")String playerName, HttpServletRequest httpServletRequest){
         User user = SessionUtil.getLoginUser(httpServletRequest);
         if (user == null) {
             return AjaxResult.fail(-1, "用户未登录");
