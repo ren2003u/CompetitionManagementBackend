@@ -3,6 +3,7 @@ package com.example.demo.mapper;
 
 import com.example.demo.model.EventTeam;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -17,9 +18,9 @@ public interface EventTeamMapper {
 
     void deleteEventTeamsByTeamNumber(int team_number);
 
-    List<EventTeam> getEventTeamsByEventNumber(int eventNumber);
+    List<EventTeam> getEventTeamsByEventNumber(@Param("eventNumber")int eventNumber);
 
-    EventTeam judgeIfEventTeamExist(int event_number,int team_number);
+    EventTeam judgeIfEventTeamExist(@Param("event_number")int event_number,@Param("team_number")int team_number);
 
-    void deleteEventTeamsByEventNumberAndTeamNumber(int event_number,int team_number);
+    void deleteEventTeamsByEventNumberAndTeamNumber(@Param("event_number")int event_number,@Param("team_number")int team_number);
 }

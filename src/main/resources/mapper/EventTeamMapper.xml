@@ -43,7 +43,7 @@
         WHERE event_number = #{eventNumber}
     </select>
     <select id="judgeIfEventTeamExist" resultType="com.example.demo.model.EventTeam">
-        select * from event_team WHERE event_number = #{eventNumber} and team_number = #{team_number}
+        select * from event_team WHERE event_number = #{event_number} and team_number = #{team_number}
     </select>
 
 </mapper>
