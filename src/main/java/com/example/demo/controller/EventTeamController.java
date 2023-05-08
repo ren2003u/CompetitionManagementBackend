@@ -41,6 +41,9 @@ public class EventTeamController {
     @RequestMapping("/joinEvent")
     public HashMap<String, Object> captainJoinEvent(@RequestParam("event_number") int event_number, @RequestParam("team_name")String team_name)
     {
+        if(teamInformationService.findTeamByName(team_name)==null){
+            return AjaxResult.fail(-1,"非法的队伍信息");
+        }
         int team_number = teamInformationService.findTeamByName(team_name).getTeam_number();
         if(eventTeamService.judgeIfEventTeamExist(event_number,team_number) != null){
             return AjaxResult.fail(-1,"您已加入了这场比赛");
