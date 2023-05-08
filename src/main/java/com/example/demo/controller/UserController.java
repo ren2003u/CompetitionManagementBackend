@@ -64,6 +64,21 @@ public class UserController {
         return AjaxResult.success(status);
     }
 
+    @ApiOperation(value = "获取所有用户", notes = "获取数据库中所有用户信息")
+    @RequestMapping("/getAllUsers")
+    public HashMap<String, Object> getAllUsers(HttpServletRequest request) {
+        User user = SessionUtil.getLoginUser(request);
+        if (user == null) {
+            return AjaxResult.fail(-1, "用户未登录");
+        }
+        User dbUser = userService.findByUsername(user.getUsername());
+        if (dbUser == null) {
+            return AjaxResult.fail(-1, "用户非法登录");
+        }
+        List<User> userList = userService.findAllUsers();
+        return AjaxResult.success(userList);
+    }
+
     @ApiOperation(value = "获取登录用户信息", notes = "获取当前登录用户的信息")
     @RequestMapping("/getLoginUser")
     public HashMap<String, Object> getLoginUser(HttpServletRequest request) {

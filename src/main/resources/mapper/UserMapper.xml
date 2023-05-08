@@ -36,5 +36,8 @@
     <select id="findByTeamname" resultType="com.example.demo.model.User">
         select * from user where team_name = #{team_name}
     </select>
+    <select id="findAllUsers" resultType="com.example.demo.model.User">
+        select * from user
+    </select>
 
 </mapper>

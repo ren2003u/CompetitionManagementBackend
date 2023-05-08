@@ -19,4 +19,6 @@ public interface UserMapper {
     int userJoinIntoTeam(@Param("team_name")String team_name,@Param("username")String username);
 
     int changeUserScore(@Param("username") String username,@Param("score") int score);
+
+    List<User> findAllUsers();
 }

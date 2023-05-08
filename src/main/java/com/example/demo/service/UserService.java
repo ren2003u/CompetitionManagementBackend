@@ -39,4 +39,8 @@ public class UserService {
     public int changeUserScore(String username,int score){
         return userMapper.changeUserScore(username,score);
     }
+
+    public List<User> findAllUsers(){
+        return userMapper.findAllUsers();
+    }
 }
