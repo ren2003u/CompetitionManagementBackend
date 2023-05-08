@@ -47,7 +47,7 @@ public class TeamUserController {
             }
         }
         if(teamMemberCount < 2){
-            userService.updateByTeamnameAndUsername("",team_name,dbUser.getgetUsername());
+            userService.updateByTeamnameAndUsername("",team_name,dbUser.getUsername());
         }else {
             return AjaxResult.fail(-1,"该队伍已经满人.");
         }
