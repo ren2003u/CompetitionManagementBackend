@@ -28,7 +28,7 @@ public class UserService {
     public int updateByTeamname(String ori_team_name,String new_team_name){
         return userMapper.updateByTeamname(ori_team_name, new_team_name);
     }
-    int updateByTeamnameAndUsername(String ori_team_name,String new_team_name,String username){
+    public int updateByTeamnameAndUsername(String ori_team_name,String new_team_name,String username){
         return userMapper.updateByTeamnameAndUsername(ori_team_name,new_team_name,username);
     }
 
