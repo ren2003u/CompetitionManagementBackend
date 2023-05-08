@@ -22,6 +22,13 @@
         SET score = #{score}
         WHERE username = #{username};
     </update>
+    <update id="updateUserByUserId">
+        UPDATE user
+        SET username = #{user.username},
+        password = #{user.password},
+        status = #{user.status}
+        WHERE id = #{user.id};
+    </update>
     <select id="login" resultType="com.example.demo.model.User">
         SELECT * FROM user
         WHERE username = #{username} AND password = #{password}

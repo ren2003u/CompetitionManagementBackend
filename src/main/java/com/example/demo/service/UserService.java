@@ -43,4 +43,8 @@ public class UserService {
     public List<User> findAllUsers(){
         return userMapper.findAllUsers();
     }
+
+    public int updateUserByUserId(User user){
+        return userMapper.updateUserByUserId(user);
+    }
 }

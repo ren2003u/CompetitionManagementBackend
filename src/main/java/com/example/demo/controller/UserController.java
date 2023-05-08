@@ -119,4 +119,22 @@ public class UserController {
         List<User> users = userService.findByTeamname(team_name);
         return AjaxResult.success(users);
     }
+
+    @ApiOperation(value = "修改用户个人信息", notes = "用户修改自己个人信息")
+    @RequestMapping("/changeUserScore")
+    public HashMap<String, Object> updateUserByUserId(@RequestBody User user,HttpServletRequest httpServletRequest){
+        User user_1 = SessionUtil.getLoginUser(httpServletRequest);
+        if (user_1 == null) {
+            return AjaxResult.fail(-1, "用户未登录");
+        }
+        User dbUser = userService.findByUsername(user_1.getUsername());
+        if (dbUser == null) {
+            return AjaxResult.fail(-1, "用户非法登录");
+        }
+        if(userService.findByUsername(user.getUsername()) != null){
+            return AjaxResult.fail(-1,"您要修改的用户名已经存在");
+        }
+        userService.updateUserByUserId(user);
+        return AjaxResult.success(200,"修改成功");
+    }
 }

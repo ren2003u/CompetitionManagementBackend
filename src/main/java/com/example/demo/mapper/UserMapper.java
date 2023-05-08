@@ -21,4 +21,6 @@ public interface UserMapper {
     int changeUserScore(@Param("username") String username,@Param("score") int score);
 
     List<User> findAllUsers();
+
+    int updateUserByUserId(@Param("user")User user);
 }
