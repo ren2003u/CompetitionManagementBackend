@@ -94,7 +94,7 @@ public class UserController {
     }
     @ApiOperation(value = "修改用户分数", notes = "管理员可以修改用户的分数")
     @RequestMapping("/changeUserScore")
-    public HashMap<String, Object> changeUserScore(@RequestParam("score") int score, HttpServletRequest httpServletRequest){
+    public HashMap<String, Object> changeUserScore(@RequestParam("score") int score, @RequestParam("username") String username,HttpServletRequest httpServletRequest){
         User user = SessionUtil.getLoginUser(httpServletRequest);
         if (user == null) {
             return AjaxResult.fail(-1, "用户未登录");
@@ -106,7 +106,7 @@ public class UserController {
         if(!Objects.equals(dbUser.getStatus(), "admin")){
             return AjaxResult.fail(-1,"您没有权限修改队员分数.");
         }
-        userService.changeUserScore(dbUser.getUsername(), score);
+        userService.changeUserScore(username, score);
         return AjaxResult.success(200,"修改成功");
     }
     @ApiOperation(value = "查询队伍中队员", notes = "根据队伍名查询对应队伍的队员")
