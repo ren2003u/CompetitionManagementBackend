@@ -67,7 +67,7 @@ public class TeamUserController {
         if(!Objects.equals(userService.findByUsername(username).getTeam_name(), team_name)){
             return AjaxResult.fail(-1,"您尚未加入该队伍.");
         }
-        userService.updateByTeamnameAndUsername(userService.findByUsername(username).getTeam_name(),"",dbUser.getgetUsername());
+        userService.updateByTeamnameAndUsername(userService.findByUsername(username).getTeam_name(),"",dbUser.getUsername());
         return AjaxResult.success(200,"退出队伍成功！");
     }
     @ApiOperation(value = "队长移除队员", notes = "根据提供的团队名称和队员名称，队长从团队中移除队员")
