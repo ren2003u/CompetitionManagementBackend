@@ -15,6 +15,7 @@ public interface UserMapper {
     List<User> findByTeamname(@Param("team_name") String team_name);
     int updateByTeamname(@Param("ori_team_name") String ori_team_name,@Param("new_team_name") String new_team_name);
 
+    int updateByTeamnameAndUsername(@Param("ori_team_name") String ori_team_name,@Param("new_team_name") String new_team_name,@Param("username") String username);
     int userJoinIntoTeam(@Param("team_name")String team_name,@Param("username")String username);
 
     int changeUserScore(@Param("username") String username,@Param("score") int score);

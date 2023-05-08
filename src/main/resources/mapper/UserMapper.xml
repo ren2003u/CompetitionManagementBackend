@@ -6,6 +6,12 @@
         SET team_name = #{new_team_name}
         WHERE team_name = #{ori_team_name};
     </update>
+
+    <update id="updateByTeamnameAndUsername">
+        UPDATE user
+        SET team_name = #{new_team_name}
+        WHERE team_name = #{ori_team_name} and username = #{username};
+    </update>
     <update id="userJoinIntoTeam">
         UPDATE user
         SET team_name = #{team_name}
