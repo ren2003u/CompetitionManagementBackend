@@ -121,7 +121,7 @@ public class UserController {
     }
 
     @ApiOperation(value = "修改用户个人信息", notes = "用户修改自己个人信息")
-    @RequestMapping("/changeUserScore")
+    @RequestMapping("/changeUserInfor")
     public HashMap<String, Object> updateUserByUserId(@RequestBody User user,HttpServletRequest httpServletRequest){
         User user_1 = SessionUtil.getLoginUser(httpServletRequest);
         if (user_1 == null) {
