@@ -54,20 +54,18 @@ public class EventController {
     @ApiOperation(value = "添加或更新活动信息", notes = "根据给定的活动信息添加新活动或更新已有活动信息")
     public HashMap<String, Object> addOrUpdateEvent(@RequestBody EventInformation eventInformation) {
         EventInformation existingEvent = eventInformationService.findEventByName(eventInformation.getEvent_name());
-
         if (existingEvent != null) {
             // Update event information
             existingEvent.setEvent_name(existingEvent.getEvent_name());
             existingEvent.setEvent_location(eventInformation.getEvent_location());
             existingEvent.setEvent_time(eventInformation.getEvent_time());
             eventInformationService.updateEvent(existingEvent);
-
         } else {
             // Add new event
             EventInformation newEvent = new EventInformation(0, eventInformation.getEvent_name(), eventInformation.getEvent_time(), eventInformation.getEvent_location());
             eventInformationService.addEvent(newEvent);
         }
-        return AjaxResult.success(200, "Event information processed successfully");
+        return AjaxResult.success(200, "赛事信息操作成功");
     }
 
     // 4. Delete the event information according to the specified event number
