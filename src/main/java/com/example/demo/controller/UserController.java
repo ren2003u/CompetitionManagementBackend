@@ -26,21 +26,24 @@ public class UserController {
     @RequestMapping("/register")
     public <status> HashMap<String, Object> register(@RequestParam("username") String username, @RequestParam("password")String password,@RequestParam("status")String status, HttpServletRequest request) {
 
+        if(userService.findByUsername(username) != null){
+            return AjaxResult.fail(-1,"用户名已存在，注册失败");
+        }
         int result = userService.register(username, password, status);
         if (result == 0) {
-            return AjaxResult.fail(-1, "Registration failed!");
+            return AjaxResult.fail(-1, "注册失败!");
         }
         // Store the user's information in the session
         User user = userService.login(username, password);
         request.getSession().setAttribute(Constant.SESSION_USERINFO_KEY, user);
-        return AjaxResult.success("User registered successfully.");
+        return AjaxResult.success("用户注册成功.");
     }
     @ApiOperation(value = "用户登录", notes = "根据提供的用户名和密码，用户登录")
     @RequestMapping("/login")
     public HashMap<String, Object> login(@RequestParam("username") String username, @RequestParam("password")String password, HttpServletRequest request) {
         User user = userService.login(username, password);
         if (user == null) {
-            return AjaxResult.fail(-1, "Login failed!");
+            return AjaxResult.fail(-1, "登录失败!");
         }
         // Store the user's information in the session
         request.getSession().setAttribute(Constant.SESSION_USERINFO_KEY, user);
@@ -51,11 +54,11 @@ public class UserController {
     public HashMap<String, Object> getStatus(HttpServletRequest request) {
         User user = SessionUtil.getLoginUser(request);
         if (user == null) {
-            return AjaxResult.fail(-1, "User not logged in");
+            return AjaxResult.fail(-1, "用户未登录");
         }
         User dbUser = userService.findByUsername(user.getUsername());
         if (dbUser == null) {
-            return AjaxResult.fail(-1, "User not found");
+            return AjaxResult.fail(-1, "用户非法登录");
         }
         String status = dbUser.getStatus();
         return AjaxResult.success(status);
@@ -66,11 +69,11 @@ public class UserController {
     public HashMap<String, Object> getLoginUser(HttpServletRequest request) {
         User user = SessionUtil.getLoginUser(request);
         if (user == null) {
-            return AjaxResult.fail(-1, "User not logged in");
+            return AjaxResult.fail(-1, "用户未登录");
         }
         User dbUser = userService.findByUsername(user.getUsername());
         if (dbUser == null) {
-            return AjaxResult.fail(-1, "User not found");
+            return AjaxResult.fail(-1, "用户非法登录");
         }
         return AjaxResult.success(dbUser);
     }
@@ -79,11 +82,11 @@ public class UserController {
     public HashMap<String, Object> changeUserScore(@RequestParam("score") int score, HttpServletRequest httpServletRequest){
         User user = SessionUtil.getLoginUser(httpServletRequest);
         if (user == null) {
-            return AjaxResult.fail(-1, "User not logged in");
+            return AjaxResult.fail(-1, "用户未登录");
         }
         User dbUser = userService.findByUsername(user.getUsername());
         if (dbUser == null) {
-            return AjaxResult.fail(-1, "User not found");
+            return AjaxResult.fail(-1, "用户非法登录");
         }
         if(!Objects.equals(dbUser.getStatus(), "admin")){
             return AjaxResult.fail(-1,"您没有权限修改队员分数.");
