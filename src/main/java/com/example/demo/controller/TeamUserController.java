@@ -90,7 +90,7 @@ public class TeamUserController {
         if(!Objects.equals(currentUserTeamName, userService.findByUsername(playerName).getTeam_name())){
             return AjaxResult.fail(-1,"您没有权限删除其他队的队员.");
         }
-        userService.updateByTeamname(userService.findByUsername(playerName).getTeam_name(),"");
+        userService.updateByTeamnameAndUsername(userService.findByUsername(playerName).getTeam_name(),"",playerName);
         return AjaxResult.success(200,"删除成功");
     }
 }
