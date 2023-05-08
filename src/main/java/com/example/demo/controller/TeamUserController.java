@@ -64,7 +64,7 @@ public class TeamUserController {
         if (dbUser == null) {
             return AjaxResult.fail(-1, "用户非法登录");
         }
-        if(Objects.equals(userService.findByUsername(username).getTeam_name(), team_name)){
+        if(!Objects.equals(userService.findByUsername(username).getTeam_name(), team_name)){
             return AjaxResult.fail(-1,"您尚未加入该队伍.");
         }
         userService.updateByTeamname(userService.findByUsername(username).getTeam_name(),"");
