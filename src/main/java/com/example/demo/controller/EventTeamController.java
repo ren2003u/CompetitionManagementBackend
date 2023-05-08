@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.commom.AjaxResult;
+import com.example.demo.model.CaptainJoinEventRequest;
 import com.example.demo.model.EventTeam;
 import com.example.demo.model.TeamInformation;
 import com.example.demo.service.EventTeamService;
@@ -39,8 +40,10 @@ public class EventTeamController {
     }
     @ApiOperation(value = "团队加入赛事", notes = "队长将团队加入指定赛事")
     @RequestMapping("/joinEvent")
-    public HashMap<String, Object> captainJoinEvent(@RequestParam("event_number") int event_number, @RequestParam("team_name")String team_name)
+    public HashMap<String, Object> captainJoinEvent(@RequestBody CaptainJoinEventRequest request)
     {
+        int event_number = request.getEvent_number();
+        String team_name = request.getTeam_name();
         if(teamInformationService.findTeamByName(team_name)==null){
             return AjaxResult.fail(-1,"非法的队伍信息");
         }
