@@ -23,4 +23,6 @@ public interface UserMapper {
     List<User> findAllUsers();
 
     int updateUserByUserId(@Param("user")User user);
+
+    User findByUserId(@Param("userId") int userId);
 }

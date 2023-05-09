@@ -46,5 +46,8 @@
     <select id="findAllUsers" resultType="com.example.demo.model.User">
         select * from user
     </select>
+    <select id="findByUserId" resultType="com.example.demo.model.User">
+        select * from user where id = #{userId}
+    </select>
 
 </mapper>

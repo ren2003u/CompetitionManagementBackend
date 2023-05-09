@@ -131,7 +131,7 @@ public class UserController {
         if (dbUser == null) {
             return AjaxResult.fail(-1, "用户非法登录");
         }
-        if(userService.findByUsername(user.getUsername()) != null){
+        if(!Objects.equals(userService.findByUserId(user.getId()).getUsername(), user.getUsername()) && userService.findByUsername(user.getUsername()) != null){
             return AjaxResult.fail(-1,"您要修改的用户名已经存在");
         }
         userService.updateUserByUserId(user);
