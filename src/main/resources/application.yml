@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/competition_management_change?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
     username: root
-    password: 111111
+    password: bsbsbyxRZRDSQX4@
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     show-sql: true
@@ -11,6 +11,8 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  resources:
+    static-locations: classpath:/static/
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
@@ -30,8 +32,14 @@ logging:
     org:
       springframework: INFO
       hibernate: ERROR
-
-
+#这里是关于跨域的配置 如果要在本地环境开发 需要改成
+#cors:
+#  allowed-origins:
+#    - "http://localhost:9528"
+#    - "http://127.0.0.1:9528"
+cors:
+  allowed-origins: []
+#
 #vue:
 #  client:
 #    resources: /path/to/vue/client/dist

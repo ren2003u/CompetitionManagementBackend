@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 @Api(tags = "用户控制器")
 @RestController
-@CrossOrigin(origins = "http://localhost:9528")
+//@CrossOrigin(origins = "http://localhost:9528")
 @RequestMapping("/user")
 public class UserController {
     @Autowired
@@ -92,7 +92,7 @@ public class UserController {
         }
         return AjaxResult.success(dbUser);
     }
-    @ApiOperation(value = "修改用户分数", notes = "管理员可以修改用户的分数")
+    @ApiOperation(value = "修改用户分数", notes = "管理员修改用户的分数")
     @RequestMapping("/changeUserScore")
     public HashMap<String, Object> changeUserScore(@RequestParam("score") int score, @RequestParam("username") String username,HttpServletRequest httpServletRequest){
         User user = SessionUtil.getLoginUser(httpServletRequest);

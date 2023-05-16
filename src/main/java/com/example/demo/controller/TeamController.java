@@ -15,7 +15,7 @@ import java.util.Map.Entry;
 
 @Api(tags = "团队控制器")
 @RestController
-@CrossOrigin(origins = "http://localhost:9528")
+//@CrossOrigin(origins = "http://localhost:9528")
 @RequestMapping("/team")
 public class TeamController {
     @Autowired

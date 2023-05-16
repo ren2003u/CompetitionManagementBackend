@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 @Api(tags = "赛事团队控制器")
 @RestController
-@CrossOrigin(origins = "http://localhost:9528")
+//@CrossOrigin(origins = "http://localhost:9528")
 @RequestMapping("/event-team")
 public class EventTeamController {
 
