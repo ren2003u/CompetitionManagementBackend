@@ -41,3 +41,4 @@ public class GlobalCorsConfig {
         return new CorsFilter(configSource);
     }
 }
+
