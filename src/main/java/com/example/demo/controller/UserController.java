@@ -8,6 +8,7 @@ import com.example.demo.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +23,9 @@ import java.util.Objects;
 public class UserController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @ApiOperation(value = "用户注册", notes = "根据提供的用户名、密码和身份，注册新用户")
     @RequestMapping("/register")
     public <status> HashMap<String, Object> register(@RequestParam("username") String username, @RequestParam("password")String password,@RequestParam("status")String status, HttpServletRequest request) {
@@ -29,7 +33,8 @@ public class UserController {
         if(userService.findByUsername(username) != null){
             return AjaxResult.fail(-1,"用户名已存在，注册失败");
         }
-        int result = userService.register(username, password, status);
+        String encodedPassword = passwordEncoder.encode(password);
+        int result = userService.register(username, encodedPassword, status);
         if (result == 0) {
             return AjaxResult.fail(-1, "注册失败!");
         }
@@ -41,8 +46,8 @@ public class UserController {
     @ApiOperation(value = "用户登录", notes = "根据提供的用户名和密码，用户登录")
     @RequestMapping("/login")
     public HashMap<String, Object> login(@RequestParam("username") String username, @RequestParam("password")String password, HttpServletRequest request) {
-        User user = userService.login(username, password);
-        if (user == null) {
+        User user = userService.findByUsername(username);
+        if (user == null || !(passwordEncoder.matches(password, user.getPassword()))) {
             return AjaxResult.fail(-1, "登录失败!");
         }
         // Store the user's information in the session

@@ -3,7 +3,7 @@ spring:
     url: jdbc:mysql://localhost:3306/competition_management_change?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
     #url: jdbc:mysql://localhost:3306/competition_management_change?characterEncoding=utf8&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&useSSL=false&collation=utf8mb4_general_ci
     username: root
-    password: bsbsbyxRZRDSQX4@
+    password: 111111
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     show-sql: true
