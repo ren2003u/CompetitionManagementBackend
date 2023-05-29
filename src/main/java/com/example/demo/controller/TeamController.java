@@ -106,6 +106,9 @@ public class TeamController {
     @ApiOperation(value = "删除指定团队", notes = "根据团队编号删除指定团队")
     @RequestMapping("/delete/{team_number}")
     public HashMap<String, Object> deleteTeam(@PathVariable("team_number") int team_number) {
+        if(team_number < 0){
+            return AjaxResult.fail(-1,"传输的队伍编号非法");
+        }
         if(teamInformationService.findTeamByNumber(team_number) == null){
             return AjaxResult.fail(-1,"传输的团队编号查找不到对应团队");
         }
