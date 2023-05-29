@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.mapper.EventInformationMapper;
 import com.example.demo.model.EventInformation;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,5 +35,8 @@ public class EventInformationService {
 
     public EventInformation findEventByName(String event_name) {
         return eventInformationMapper.findEventByName(event_name);
+    }
+    public List<EventInformation> fuzzyQueryEligibleEventByEventName(String fuzzyEventName){
+        return eventInformationMapper.fuzzyQueryEligibleEventByEventName(fuzzyEventName);
     }
 }

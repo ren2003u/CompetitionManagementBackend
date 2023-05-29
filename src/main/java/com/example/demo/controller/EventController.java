@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import com.example.demo.commom.AjaxResult;
 import com.example.demo.model.EventInformation;
@@ -90,7 +91,7 @@ public class EventController {
     }
 
     @RequestMapping("/updateEvent")
-    @ApiOperation(value = "添加活动信息", notes = "根据给定的活动信息添加新活动")
+    @ApiOperation(value = "更新活动信息", notes = "根据给定的活动信息更新已有的活动信息")
     public HashMap<String, Object> updateEvent(@RequestBody EventInformation eventInformation) {
         if(StringUtils.isBlank(eventInformation.getEvent_location()) || StringUtils.isBlank(eventInformation.getEvent_name()) || StringUtils.isBlank(eventInformation.getEvent_time())){
             return AjaxResult.fail(-1,"传输的活动信息不完整或含有非法信息");
@@ -117,5 +118,17 @@ public class EventController {
         eventTeamService.deleteEventTeamsByEventNumber(event_number);
         eventInformationService.deleteEvent(event_number);
         return AjaxResult.success(200,"删除赛事成功");
+    }
+    @ApiOperation("根据输入的赛事名称模糊查找赛事信息")
+    @ApiImplicitParam(name = "fuzzyEventName", value = "赛事名称", required = true, dataType = "String", paramType = "path",dataTypeClass = String.class)
+    @GetMapping("/fuzzyQueryByEventName/{eventName}")
+    public HashMap<String, Object> fuzzyQueryEligibleOrgByOrgName(@PathVariable("eventName") String eventName)
+    {
+        if(StringUtils.isBlank(eventName)){
+            return AjaxResult.fail(-1,"传输的赛事名称为空或非法");
+        }
+        List<EventInformation> eventList = eventInformationService.fuzzyQueryEligibleEventByEventName(eventName);
+
+        return AjaxResult.success(eventList);
     }
 }

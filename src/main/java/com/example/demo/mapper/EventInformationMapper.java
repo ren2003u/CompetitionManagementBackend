@@ -2,6 +2,7 @@ package com.example.demo.mapper;
 
 import com.example.demo.model.EventInformation;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -17,4 +18,6 @@ public interface EventInformationMapper {
 
     void deleteEvent(int event_number);
     EventInformation findEventByName(String event_name);
+
+    List<EventInformation> fuzzyQueryEligibleEventByEventName(@Param("fuzzyEventName")String fuzzyEventName);
 }

@@ -33,4 +33,7 @@
         SELECT * FROM event_information WHERE event_name = #{event_name}
     </select>
 
+    <select id="fuzzyQueryEligibleEventByEventName" resultType="com.example.demo.model.EventInformation">
+        SELECT * FROM event_information WHERE event_name LIKE CONCAT('%', #{fuzzyEventName} , '%');
+    </select>
 </mapper>
