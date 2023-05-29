@@ -8,6 +8,7 @@ import com.example.demo.service.EventTeamService;
 import com.example.demo.service.TeamInformationService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,7 +28,10 @@ public class EventTeamController {
     private TeamInformationService teamInformationService;
     @ApiOperation(value = "根据赛事编号获取参赛团队", notes = "返回指定赛事编号的所有参赛团队名称")
     @RequestMapping("/event/{eventNumber}")
-    public List<String> getEventTeamsByEventNumber(@PathVariable("eventNumber") int eventNumber) {
+    public HashMap<String, Object> getEventTeamsByEventNumber(@PathVariable("eventNumber") int eventNumber) {
+        if(eventNumber < 0){
+            return AjaxResult.fail(-1,"传输的赛事编号非法");
+        }
         List<EventTeam> eventTeams = eventTeamService.getEventTeamsByEventNumber(eventNumber);
         List<String> teamNames = new ArrayList<>();
 
@@ -36,16 +40,22 @@ public class EventTeamController {
             teamNames.add(teamInformation.getTeam_name());
         }
 
-        return teamNames;
+        return AjaxResult.success(teamNames);
     }
     @ApiOperation(value = "团队加入赛事", notes = "队长将团队加入指定赛事")
     @RequestMapping("/joinEvent")
     public HashMap<String, Object> captainJoinEvent(@RequestBody CaptainJoinEventRequest request)
     {
+        if(request.getEvent_number()<0){
+            return AjaxResult.fail(-1,"传输的赛事编号非法");
+        }
+        if(StringUtils.isBlank(request.getTeam_name())){
+            return AjaxResult.fail(-1,"传输的队伍名称非法");
+        }
         int event_number = request.getEvent_number();
         String team_name = request.getTeam_name();
         if(teamInformationService.findTeamByName(team_name)==null){
-            return AjaxResult.fail(-1,"非法的队伍信息");
+            return AjaxResult.fail(-1,"传输的队伍信息没有队伍与其对应");
         }
         int team_number = teamInformationService.findTeamByName(team_name).getTeam_number();
         if(eventTeamService.judgeIfEventTeamExist(event_number,team_number) != null){
@@ -59,6 +69,15 @@ public class EventTeamController {
     @RequestMapping("/withdrawFromEvent")
     public HashMap<String, Object> captainWithdrawEvent(@RequestParam("event_number") int event_number, @RequestParam("team_name")String team_name)
     {
+        if(event_number < 0){
+            return AjaxResult.fail(-1,"传输的赛事编号非法");
+        }
+        if(StringUtils.isBlank(team_name)){
+            return AjaxResult.fail(-1,"传输的队伍名称非法");
+        }
+        if(teamInformationService.findTeamByName(team_name)==null){
+            return AjaxResult.fail(-1,"传输的队伍信息没有队伍与其对应");
+        }
         int team_number = teamInformationService.findTeamByName(team_name).getTeam_number();
         if(eventTeamService.judgeIfEventTeamExist(event_number,team_number) == null){
             return AjaxResult.fail(-1,"您尚未加入该比赛.");

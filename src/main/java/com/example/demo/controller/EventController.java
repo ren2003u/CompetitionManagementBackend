@@ -7,6 +7,7 @@ import com.example.demo.model.EventInformation;
 import com.example.demo.service.EventInformationService;
 import com.example.demo.service.EventTeamService;
 import com.example.demo.service.TeamInformationService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,11 +41,14 @@ public class EventController {
     // 2. Look up event information for a specific event name
     @RequestMapping("/byname/{event_name}")
     @ApiOperation(value = "根据活动名称查询活动信息", notes = "根据给定的活动名称查找活动信息")
-    public HashMap getEventByName(@PathVariable("event_name") String event_name) {
+    public HashMap<String, Object> getEventByName(@PathVariable("event_name") String event_name) {
         //todo: The return value is incomplete
+        if(StringUtils.isBlank(event_name)){
+            return AjaxResult.fail(-1,"传输的活动名称非法");
+        }
         EventInformation event = eventInformationService.findEventByName(event_name);
         if (event == null) {
-            return AjaxResult.fail(-1, "Event not found!");
+            return AjaxResult.fail(-1, "活动未找到");
         }
         return AjaxResult.success(event);
     }
@@ -53,6 +57,9 @@ public class EventController {
     @RequestMapping("/addOrUpdate")
     @ApiOperation(value = "添加或更新活动信息", notes = "根据给定的活动信息添加新活动或更新已有活动信息")
     public HashMap<String, Object> addOrUpdateEvent(@RequestBody EventInformation eventInformation) {
+        if(StringUtils.isBlank(eventInformation.getEvent_location()) || StringUtils.isBlank(eventInformation.getEvent_name()) || StringUtils.isBlank(eventInformation.getEvent_time())){
+            return AjaxResult.fail(-1,"传输的活动信息不完整或含有非法信息");
+        }
         EventInformation existingEvent = eventInformationService.findEventByName(eventInformation.getEvent_name());
         if (existingEvent != null) {
             // Update event information
@@ -71,9 +78,12 @@ public class EventController {
     // 4. Delete the event information according to the specified event number
     @RequestMapping("/delete/{event_number}")
     @ApiOperation(value = "根据活动编号删除活动信息", notes = "根据指定的活动编号删除活动信息")
-    public String deleteEvent(@PathVariable("event_number") int event_number) {
+    public HashMap<String, Object> deleteEvent(@PathVariable("event_number") int event_number) {
+        if(event_number < 0){
+            return AjaxResult.fail(-1,"传输的赛事编号非法");
+        }
         eventTeamService.deleteEventTeamsByEventNumber(event_number);
         eventInformationService.deleteEvent(event_number);
-        return "Deleted event information successfully.";
+        return AjaxResult.success(200,"删除赛事成功");
     }
 }

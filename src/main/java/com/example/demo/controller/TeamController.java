@@ -28,7 +28,7 @@ public class TeamController {
     private UserService userService;
     @ApiOperation(value = "查询所有团队", notes = "返回数据库中所有团队的信息")
     @RequestMapping("/list")
-    public HashMap findAllTeams() {
+    public HashMap<String, Object> findAllTeams() {
         List<TeamInformation> teams = teamInformationService.findAllTeams();
         if (teams == null || teams.isEmpty()) {
             return AjaxResult.fail(-1, "当前没有队伍!");
@@ -36,8 +36,8 @@ public class TeamController {
         return AjaxResult.success(teams);
     }
     @ApiOperation(value = "根据团队名称查询", notes = "返回指定团队名称的团队信息")
-    @RequestMapping("/byname/{team_name}")
-    public HashMap findTeamByName(@PathVariable("team_name") String team_name) {
+    @RequestMapping("/byName/{team_name}")
+    public HashMap<String, Object> findTeamByName(@PathVariable("team_name") String team_name) {
         TeamInformation team = teamInformationService.findTeamByName(team_name);
         if (team == null) {
             return AjaxResult.fail(-1, "该队伍未找到!");
@@ -75,7 +75,7 @@ public class TeamController {
 
     @ApiOperation(value = "按学院排序", notes = "返回学院按照比分降序排序的结果")
     @RequestMapping("/getRankByTeamCollege")
-    public HashMap getRankByTeamCollege() {
+    public HashMap<String, Object> getRankByTeamCollege() {
         List<TeamInformation> teams = teamInformationService.findAllTeams();
         if (teams == null || teams.isEmpty()) {
             return AjaxResult.fail(-1, "当前没有队伍!");
