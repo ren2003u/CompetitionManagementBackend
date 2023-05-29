@@ -4,9 +4,11 @@ package com.example.demo.controller;
 import com.example.demo.commom.AjaxResult;
 import com.example.demo.commom.SessionUtil;
 import com.example.demo.model.User;
+import com.example.demo.service.TeamInformationService;
 import com.example.demo.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +23,9 @@ import java.util.Objects;
 public class TeamUserController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    TeamInformationService teamInformationService;
     @ApiOperation(value = "队员加入团队", notes = "根据提供的团队名称和用户名，将队员加入到团队中")
     @RequestMapping("/joinIntoTeam")
     public HashMap<String, Object> UserJoinIntoTeam(@RequestParam("team_name") String team_name, @RequestParam("username")String username, HttpServletRequest httpServletRequest){
@@ -56,6 +61,9 @@ public class TeamUserController {
     @ApiOperation(value = "队员退出团队", notes = "根据提供的团队名称和用户名，队员退出团队")
     @RequestMapping("/withdrawFromTeam")
     public HashMap<String, Object> userWithdrawFormTeam(@RequestParam("team_name") String team_name, @RequestParam("username")String username, HttpServletRequest httpServletRequest){
+        if(StringUtils.isBlank(team_name) || StringUtils.isBlank(username)){
+            return AjaxResult.fail(-1,"传输的信息中存在非法信息");
+        }
         User user = SessionUtil.getLoginUser(httpServletRequest);
         if (user == null) {
             return AjaxResult.fail(-1, "用户未登录");
@@ -63,6 +71,12 @@ public class TeamUserController {
         User dbUser = userService.findByUsername(user.getUsername());
         if (dbUser == null) {
             return AjaxResult.fail(-1, "用户非法登录");
+        }
+        if(teamInformationService.findTeamByName(team_name) == null){
+            return AjaxResult.fail(-1,"传输的队伍信息没有对应队伍与其匹配");
+        }
+        if(userService.findByUsername(username) == null){
+            return AjaxResult.fail(-1,"没有用户与传输的用户名相对应");
         }
         if(!Objects.equals(userService.findByUsername(username).getTeam_name(), team_name)){
             return AjaxResult.fail(-1,"您尚未加入该队伍.");
@@ -73,6 +87,9 @@ public class TeamUserController {
     @ApiOperation(value = "队长移除队员", notes = "根据提供的团队名称和队员名称，队长从团队中移除队员")
     @RequestMapping("/captainDeletePlayer")
     public HashMap<String, Object> captainDeletePlayer(@RequestParam("team_name") String team_name, @RequestParam("playerName")String playerName, HttpServletRequest httpServletRequest){
+        if(StringUtils.isBlank(team_name) || StringUtils.isBlank(playerName)){
+            return AjaxResult.fail(-1,"传输的信息为空或为非法信息");
+        }
         User user = SessionUtil.getLoginUser(httpServletRequest);
         if (user == null) {
             return AjaxResult.fail(-1, "用户未登录");
@@ -81,7 +98,12 @@ public class TeamUserController {
         if (dbUser == null) {
             return AjaxResult.fail(-1, "用户非法登录");
         }
-
+        if(teamInformationService.findTeamByName(team_name) == null){
+            return AjaxResult.fail(-1,"传输的队伍信息没有对应队伍与其匹配");
+        }
+        if(userService.findByUsername(playerName) == null){
+            return AjaxResult.fail(-1,"没有用户与传输的用户名相对应");
+        }
         String currentUserStatus = dbUser.getStatus();
         if(!Objects.equals(currentUserStatus, "captain")){
             return AjaxResult.fail(-1,"您没有权限删除队员.");
