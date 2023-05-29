@@ -26,32 +26,38 @@ public class UserController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-    @ApiOperation(value = "用户注册", notes = "根据提供的用户名、密码和身份，注册新用户")
+
     @RequestMapping("/register")
-    public <status> HashMap<String, Object> register(@RequestParam("username") String username, @RequestParam("password")String password,@RequestParam("status")String status, HttpServletRequest request) {
+    public HashMap<String, Object> register(@RequestParam("username") String username, @RequestParam("password")String password,@RequestParam("status")String status, HttpServletRequest request) {
 
         if(userService.findByUsername(username) != null){
             return AjaxResult.fail(-1,"用户名已存在，注册失败");
         }
+
         String encodedPassword = passwordEncoder.encode(password);
         int result = userService.register(username, encodedPassword, status);
+
         if (result == 0) {
             return AjaxResult.fail(-1, "注册失败!");
         }
+
         // Store the user's information in the session
-        User user = userService.login(username, password);
+        User user = userService.login(username, encodedPassword);
         request.getSession().setAttribute(Constant.SESSION_USERINFO_KEY, user);
+
         return AjaxResult.success("用户注册成功.");
     }
-    @ApiOperation(value = "用户登录", notes = "根据提供的用户名和密码，用户登录")
+
     @RequestMapping("/login")
     public HashMap<String, Object> login(@RequestParam("username") String username, @RequestParam("password")String password, HttpServletRequest request) {
         User user = userService.findByUsername(username);
+
         if (user == null || !(passwordEncoder.matches(password, user.getPassword()))) {
             return AjaxResult.fail(-1, "登录失败!");
         }
         // Store the user's information in the session
         request.getSession().setAttribute(Constant.SESSION_USERINFO_KEY, user);
+
         return AjaxResult.success(user);
     }
     @ApiOperation(value = "获取登录用户的状态", notes = "获取当前登录用户的状态")
