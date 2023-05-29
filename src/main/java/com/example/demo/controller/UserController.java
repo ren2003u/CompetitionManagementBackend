@@ -4,9 +4,11 @@ import com.example.demo.commom.AjaxResult;
 import com.example.demo.commom.Constant;
 import com.example.demo.commom.SessionUtil;
 import com.example.demo.model.User;
+import com.example.demo.service.TeamInformationService;
 import com.example.demo.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -27,9 +29,15 @@ public class UserController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private TeamInformationService teamInformationService;
+
     @RequestMapping("/register")
     public HashMap<String, Object> register(@RequestParam("username") String username, @RequestParam("password")String password,@RequestParam("status")String status, HttpServletRequest request) {
 
+        if(StringUtils.isBlank(username) || StringUtils.isBlank(password) || StringUtils.isBlank(status)){
+            return AjaxResult.fail(-1,"传输的注册信息不完整");
+        }
         if(userService.findByUsername(username) != null){
             return AjaxResult.fail(-1,"用户名已存在，注册失败");
         }
@@ -50,6 +58,9 @@ public class UserController {
 
     @RequestMapping("/login")
     public HashMap<String, Object> login(@RequestParam("username") String username, @RequestParam("password")String password, HttpServletRequest request) {
+        if(StringUtils.isBlank(username) || StringUtils.isBlank(password)){
+            return AjaxResult.fail(-1,"传输的登录信息不完整");
+        }
         User user = userService.findByUsername(username);
 
         if (user == null || !(passwordEncoder.matches(password, user.getPassword()))) {
@@ -106,6 +117,12 @@ public class UserController {
     @ApiOperation(value = "修改用户分数", notes = "管理员修改用户的分数")
     @RequestMapping("/changeUserScore")
     public HashMap<String, Object> changeUserScore(@RequestParam("score") int score, @RequestParam("username") String username,HttpServletRequest httpServletRequest){
+        if(StringUtils.isBlank(username) || score < 0){
+            return AjaxResult.fail(-1,"传输的信息不完整或存在非法信息");
+        }
+        if(userService.findByUsername(username) == null){
+            return AjaxResult.fail(-1,"传输的用户名没有用户与其对应");
+        }
         User user = SessionUtil.getLoginUser(httpServletRequest);
         if (user == null) {
             return AjaxResult.fail(-1, "用户未登录");
@@ -123,9 +140,11 @@ public class UserController {
     @ApiOperation(value = "查询队伍中队员", notes = "根据队伍名查询对应队伍的队员")
     @RequestMapping("/searchUsersByTeamName")
     public HashMap<String, Object> searchUsersByTeamName(@RequestParam("team_name") String team_name){
-        System.out.println(team_name);
-        if(team_name == null){
-            return AjaxResult.fail(-1,"队名不能为空.");
+        if(StringUtils.isBlank(team_name)){
+            return AjaxResult.fail(-1,"队名不能为空");
+        }
+        if(teamInformationService.findTeamByName(team_name) == null){
+            return AjaxResult.fail(-1,"传输的队名没有队伍与其对应");
         }
         List<User> users = userService.findByTeamname(team_name);
         return AjaxResult.success(users);
@@ -134,6 +153,14 @@ public class UserController {
     @ApiOperation(value = "修改用户个人信息", notes = "用户修改自己个人信息")
     @RequestMapping("/changeUserInfor")
     public HashMap<String, Object> updateUserByUserId(@RequestBody User user,HttpServletRequest httpServletRequest){
+        if(user.getTeam_name() == null){
+            return AjaxResult.fail(-1,"传输的队伍名称非法");
+        }
+        if(!user.getTeam_name().equals("")){
+            if(teamInformationService.findTeamByName(user.getTeam_name()) == null){
+                return AjaxResult.fail(-1,"传输的队名没有队伍与其对应");
+            }
+        }
         User user_1 = SessionUtil.getLoginUser(httpServletRequest);
         if (user_1 == null) {
             return AjaxResult.fail(-1, "用户未登录");
