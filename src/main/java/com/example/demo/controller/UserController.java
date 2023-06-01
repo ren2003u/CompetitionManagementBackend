@@ -74,7 +74,7 @@ public class UserController {
     @ApiOperation(value = "获取登录用户的状态", notes = "获取当前登录用户的状态")
     @RequestMapping("/getLoginUserStatus")
     public HashMap<String, Object> getStatus(HttpServletRequest request) {
-        User user = SessionUtil.getLoginUser(request);
+        User user = (User) request.getSession().getAttribute(Constant.SESSION_USERINFO_KEY);
         if (user == null) {
             return AjaxResult.fail(-1, "用户未登录");
         }
@@ -89,7 +89,7 @@ public class UserController {
     @ApiOperation(value = "获取所有用户", notes = "获取数据库中所有用户信息")
     @RequestMapping("/getAllUsers")
     public HashMap<String, Object> getAllUsers(HttpServletRequest request) {
-        User user = SessionUtil.getLoginUser(request);
+        User user = (User) request.getSession().getAttribute(Constant.SESSION_USERINFO_KEY);
         if (user == null) {
             return AjaxResult.fail(-1, "用户未登录");
         }
@@ -104,7 +104,7 @@ public class UserController {
     @ApiOperation(value = "获取登录用户信息", notes = "获取当前登录用户的信息")
     @RequestMapping("/getLoginUser")
     public HashMap<String, Object> getLoginUser(HttpServletRequest request) {
-        User user = SessionUtil.getLoginUser(request);
+        User user = (User) request.getSession().getAttribute(Constant.SESSION_USERINFO_KEY);
         if (user == null) {
             return AjaxResult.fail(-1, "用户未登录");
         }
@@ -116,14 +116,14 @@ public class UserController {
     }
     @ApiOperation(value = "修改用户分数", notes = "管理员修改用户的分数")
     @RequestMapping("/changeUserScore")
-    public HashMap<String, Object> changeUserScore(@RequestParam("score") int score, @RequestParam("username") String username,HttpServletRequest httpServletRequest){
+    public HashMap<String, Object> changeUserScore(@RequestParam("score") int score, @RequestParam("username") String username,HttpServletRequest request){
         if(StringUtils.isBlank(username) || score < 0){
             return AjaxResult.fail(-1,"传输的信息不完整或存在非法信息");
         }
         if(userService.findByUsername(username) == null){
             return AjaxResult.fail(-1,"传输的用户名没有用户与其对应");
         }
-        User user = SessionUtil.getLoginUser(httpServletRequest);
+        User user = (User) request.getSession().getAttribute(Constant.SESSION_USERINFO_KEY);
         if (user == null) {
             return AjaxResult.fail(-1, "用户未登录");
         }
@@ -152,7 +152,7 @@ public class UserController {
 
     @ApiOperation(value = "修改用户个人信息", notes = "用户修改自己个人信息")
     @RequestMapping("/changeUserInfor")
-    public HashMap<String, Object> updateUserByUserId(@RequestBody User user,HttpServletRequest httpServletRequest){
+    public HashMap<String, Object> updateUserByUserId(@RequestBody User user,HttpServletRequest request){
         if(user.getTeam_name() == null){
             return AjaxResult.fail(-1,"传输的队伍名称非法");
         }
@@ -161,7 +161,7 @@ public class UserController {
                 return AjaxResult.fail(-1,"传输的队名没有队伍与其对应");
             }
         }
-        User user_1 = SessionUtil.getLoginUser(httpServletRequest);
+        User user_1 = (User) request.getSession().getAttribute(Constant.SESSION_USERINFO_KEY);
         if (user_1 == null) {
             return AjaxResult.fail(-1, "用户未登录");
         }

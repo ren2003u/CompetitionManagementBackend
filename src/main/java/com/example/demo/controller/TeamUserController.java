@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 
 import com.example.demo.commom.AjaxResult;
+import com.example.demo.commom.Constant;
 import com.example.demo.commom.SessionUtil;
 import com.example.demo.model.User;
 import com.example.demo.service.TeamInformationService;
@@ -28,12 +29,12 @@ public class TeamUserController {
     TeamInformationService teamInformationService;
     @ApiOperation(value = "队员加入团队", notes = "根据提供的团队名称和用户名，将队员加入到团队中")
     @RequestMapping("/joinIntoTeam")
-    public HashMap<String, Object> UserJoinIntoTeam(@RequestParam("team_name") String team_name, @RequestParam("username")String username, HttpServletRequest httpServletRequest){
+    public HashMap<String, Object> UserJoinIntoTeam(@RequestParam("team_name") String team_name, @RequestParam("username")String username, HttpServletRequest request){
         if(!Objects.equals(userService.findByUsername(username).getTeam_name(), "")){
             return AjaxResult.fail(-1,"您已加入其他队伍，无法加入新队伍.");
         }
         List<User> currentUsers =  userService.findByTeamname(team_name);
-        User user = SessionUtil.getLoginUser(httpServletRequest);
+        User user = (User) request.getSession().getAttribute(Constant.SESSION_USERINFO_KEY);
         if (user == null) {
             return AjaxResult.fail(-1, "用户未登录");
         }
@@ -60,11 +61,11 @@ public class TeamUserController {
     }
     @ApiOperation(value = "队员退出团队", notes = "根据提供的团队名称和用户名，队员退出团队")
     @RequestMapping("/withdrawFromTeam")
-    public HashMap<String, Object> userWithdrawFormTeam(@RequestParam("team_name") String team_name, @RequestParam("username")String username, HttpServletRequest httpServletRequest){
+    public HashMap<String, Object> userWithdrawFormTeam(@RequestParam("team_name") String team_name, @RequestParam("username")String username, HttpServletRequest request){
         if(StringUtils.isBlank(team_name) || StringUtils.isBlank(username)){
             return AjaxResult.fail(-1,"传输的信息中存在非法信息");
         }
-        User user = SessionUtil.getLoginUser(httpServletRequest);
+        User user = (User) request.getSession().getAttribute(Constant.SESSION_USERINFO_KEY);
         if (user == null) {
             return AjaxResult.fail(-1, "用户未登录");
         }
@@ -90,7 +91,7 @@ public class TeamUserController {
         if(StringUtils.isBlank(team_name) || StringUtils.isBlank(playerName)){
             return AjaxResult.fail(-1,"传输的信息为空或为非法信息");
         }
-        User user = SessionUtil.getLoginUser(httpServletRequest);
+        User user = (User) httpServletRequest.getSession().getAttribute(Constant.SESSION_USERINFO_KEY);
         if (user == null) {
             return AjaxResult.fail(-1, "用户未登录");
         }

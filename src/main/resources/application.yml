@@ -17,6 +17,11 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+  redis:
+    host: localhost
+    port: 6379
+  session:
+    store-type: redis
 
 
 mybatis:
