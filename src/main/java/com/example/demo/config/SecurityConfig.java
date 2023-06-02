@@ -10,44 +10,36 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 
 import java.util.Collections;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
-
-    private final UserMapper userMapper;
-
-
-    private final PasswordEncoder passwordEncoder;
-
-    public SecurityConfig(UserMapper userMapper, PasswordEncoder passwordEncoder) {
-        this.userMapper = userMapper;
-        this.passwordEncoder = passwordEncoder;
-    }
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/user/**").permitAll()
-                .anyRequest().authenticated()
-                .and().httpBasic();
-    }
+public class SecurityConfig {
 
     @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth, PasswordEncoder passwordEncoder) throws Exception {
-        auth.userDetailsService(userDetailsService())
-                .passwordEncoder(passwordEncoder);
+    private UserMapper userMapper;
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf().disable()
+                .authorizeRequests()
+                .antMatchers("/user/register", "/user/login").permitAll()
+                .anyRequest().authenticated()
+                .and().httpBasic()
+                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
+        return http.build();
     }
 
     @Bean
-    public UserDetailsService userDetailsService(UserMapper userMapper) {
+    public UserDetailsService userDetailsService() {
         return username -> {
             User user = userMapper.findByUsername(username);
             if (user != null) {
@@ -56,5 +48,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 throw new UsernameNotFoundException("User not found");
             }
         };
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }
