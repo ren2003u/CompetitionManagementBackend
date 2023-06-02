@@ -45,7 +45,7 @@ public class SecurityConfig {
             if (user != null) {
                 return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), Collections.emptyList());
             } else {
-                throw new UsernameNotFoundException("User not found");
+                throw new UsernameNotFoundException("用户未找到");
             }
         };
     }
