@@ -1,8 +1,10 @@
 package com.example.demo.controller;
 
+import com.example.demo.auth.jwt.JwtUtil;
 import com.example.demo.commom.AjaxResult;
 import com.example.demo.commom.Constant;
 import com.example.demo.commom.SessionUtil;
+import com.example.demo.config.CustomUserDetailsService;
 import com.example.demo.model.User;
 import com.example.demo.service.TeamInformationService;
 import com.example.demo.service.UserService;
@@ -12,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +33,11 @@ public class UserController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private JwtUtil jwtUtil;
 
+    @Autowired
+    private CustomUserDetailsService customUserDetailsService;
     @Autowired
     private TeamInformationService teamInformationService;
 
@@ -68,11 +75,20 @@ public class UserController {
         if (user == null || !(passwordEncoder.matches(password, user.getPassword()))) {
             return AjaxResult.fail(-1, "登录失败!");
         }
+
+        // Generate the JWT token using the user details
+        UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
+        String token = jwtUtil.generateToken(userDetails);
+
         // Store the user's information in the session
         request.getSession().setAttribute(Constant.SESSION_USERINFO_KEY, user);
 
-        return AjaxResult.success(user);
+        // Include the JWT token in the response
+        HashMap<String, Object> response = AjaxResult.success(user);
+        response.put("token", token);
+        return response;
     }
+
     @ApiOperation(value = "获取登录用户的状态", notes = "获取当前登录用户的状态")
     @RequestMapping("/getLoginUserStatus")
     public HashMap<String, Object> getStatus(HttpServletRequest request) {

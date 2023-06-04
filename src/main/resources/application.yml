@@ -36,8 +36,9 @@ server:
 logging:
   level:
     org:
-      springframework: INFO
+      springframework: DEBUG # Changed from INFO to DEBUG
       hibernate: ERROR
+      springframework.security: DEBUG # Added this line to enable Spring Security debug logs
 #这里是关于跨域的配置 如果要在本地环境开发 需要改成
 #cors:
 #  allowed-origins:
