@@ -11,6 +11,23 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+// Question:When we log out, what would happen to the token we previously generated? Be destroyed by SpringSecurity or what?
+// Answer:JWTs are stateless, which means that they are not stored on the server side after being issued.
+// This is part of what makes them scalable, as you don't have to manage a database or in-memory store of active tokens.
+//
+//In traditional session management, logging out typically involves destroying the server-side session.
+// However, because there is no server-side session associated with a JWT, the server doesn't do anything when you log out.
+//
+// Instead, the process of "logging out" a user with a JWT typically involves discarding the JWT on the client side.
+// The token is usually stored in local storage or a cookie on the client, so you would delete the token from there when the user logs out.
+//
+// As for the server side, since there's no way to invalidate a JWT once it has been issued, the general best practice is to set a relatively short expiration time on the token, forcing the client to obtain a new token periodically.
+//
+// That being said, there are methods to handle JWT invalidation on the server side if needed, such as implementing a token blacklist, or using a token introspection endpoint,
+// but these methods essentially reintroduce state back into the equation and add complexity to the system.
+//
+// So, to directly answer your question: No, the token is not destroyed by Spring Security or any other server-side mechanism upon logout.
+// It is simply discarded on the client side.
 @Component
 public class JwtUtil {
     private final String secret = "apple";  // Replace with your own secret
