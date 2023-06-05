@@ -68,6 +68,9 @@ public class JwtUtil {
     // parseClaimsJws(token) parses the JWT token, validates its signature, and returns the claims inside the token.
     // If the signature is not valid (i.e., the token was not signed with the correct secret key), parseClaimsJws will throw an exception, and the token will be rejected.
     // This is why it's very important to keep your secret key private. Anyone who knows the secret key can generate valid tokens, which would be a serious security risk.
+    // Also, note that Spring Security doesn't just validate the token's signature.
+    // It also checks the token's expiration date and the username stored in the token.
+    // If the token is expired or if the username doesn't match a valid user, the token will be rejected.
     private Claims getAllClaimsFromToken(String token) {
         return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
     }
