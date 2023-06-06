@@ -6,12 +6,12 @@ spring:
     password: 111111
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
-    show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: update  # specify "create" if you want Hibernate to create tables for you
     properties:
       hibernate:
-        format_sql: true
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect  # specify the dialect based on your MySQL version
+    show-sql: true  # to log SQL statements
   resources:
     static-locations: classpath:/static/
   mvc:
