@@ -3,8 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.auth.jwt.JwtUtil;
 import com.example.demo.commom.AjaxResult;
 import com.example.demo.commom.Constant;
-import com.example.demo.commom.SessionUtil;
-import com.example.demo.config.CustomUserDetailsService;
+import com.example.demo.auth.jwt.CustomUserDetailsService;
 import com.example.demo.model.User;
 import com.example.demo.service.TeamInformationService;
 import com.example.demo.service.UserService;
@@ -12,8 +11,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 @Api(tags = "用户控制器")
 @RestController
@@ -47,8 +43,16 @@ public class UserController {
         if(StringUtils.isBlank(username) || StringUtils.isBlank(password) || StringUtils.isBlank(status)){
             return AjaxResult.fail(-1,"传输的注册信息不完整");
         }
+        // Validate username length
+        if (username.length() < 4 || username.length() > 30) {
+            return AjaxResult.fail(-1, "用户名须介于4到30个字符之间");
+        }
         if(userService.findByUsername(username) != null){
             return AjaxResult.fail(-1,"用户名已存在，注册失败");
+        }
+        // Validate password strength
+        if (!password.matches("(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}")) {
+            return AjaxResult.fail(-1, "密码至少需要有8个字符且必须包含数字,大写字母,小写字母和特殊字符");
         }
 
         String encodedPassword = passwordEncoder.encode(password);

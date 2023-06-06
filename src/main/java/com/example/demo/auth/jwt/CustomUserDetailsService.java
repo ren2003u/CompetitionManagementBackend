@@ -1,4 +1,4 @@
-package com.example.demo.config;
+package com.example.demo.auth.jwt;
 
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.model.User;
